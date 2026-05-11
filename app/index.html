@@ -767,9 +767,60 @@ input:focus,select:focus,textarea:focus{
   .brand p{font-size:9px}
 }
 
+
+.supabase-logout{position:fixed;right:14px;bottom:14px;z-index:30;border:1px solid rgba(199,164,106,.55);background:rgba(6,29,38,.92);color:#fff;border-radius:14px;padding:11px 14px;font-weight:800;cursor:pointer;box-shadow:0 12px 28px rgba(0,0,0,.22)}
+.supabase-logout:hover{background:#0F3443}
+
 </style>
 </head>
-<body class="menu-open">
+<body>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const supabaseUrl = 'https://uuiuepdpjhpyxhgmveur.supabase.co';
+const supabaseKey = 'sb_publishable_AVT257sp6FQB8ZWvjyEfwQ_L2jfJ3tS';
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+async function verificarLogin(){
+  const { data: { session } } = await supabase.auth.getSession();
+  if(!session){
+    window.location.href = "../login.html";
+    return;
+  }
+
+  const user = session.user;
+
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+  if(error || !profile || profile.ativo !== true){
+    await supabase.auth.signOut();
+    window.location.href = "../login.html";
+    return;
+  }
+
+  if(profile.validade){
+    const hoje = new Date();
+    hoje.setHours(0,0,0,0);
+    const validade = new Date(profile.validade + 'T23:59:59');
+    if(validade < hoje){
+      await supabase.auth.signOut();
+      window.location.href = "../login.html?expired=1";
+      return;
+    }
+  }
+}
+
+async function sairEmergys(){
+  await supabase.auth.signOut();
+  window.location.href = "../login.html";
+}
+
+verificarLogin();
+</script>
+
 <div class="modal" id="termsModal" style="display: none;">
 <div class="modal-box">
 <h2>Termo de uso e responsabilidade médica</h2>
@@ -6324,5 +6375,6 @@ window.onload = function(){
 };
 
 </script>
+<button class="supabase-logout" onclick="sairEmergys()">Sair</button>
 
 </body></html>
