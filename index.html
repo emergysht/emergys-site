@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Emergys | Clareza em momentos críticos</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --azul:#061D26;
+  --azul2:#0F3443;
+  --salvia:#8AAE92;
+  --dourado:#C7A46A;
+  --off:#F5F3EE;
+  --branco:#FFFFFF;
+  --texto:#DDE7E4;
+  --muted:rgba(255,255,255,.68);
+  --card:rgba(255,255,255,.065);
+  --border:rgba(255,255,255,.12);
+  --shadow:0 30px 90px rgba(0,0,0,.35);
+}
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Inter,sans-serif;
+  background:var(--azul);
+  color:var(--branco);
+  overflow-x:hidden;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+.container{
+  width:min(1180px,92%);
+  margin:auto;
+}
+
+.nav{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  z-index:20;
+  background:rgba(6,29,38,.78);
+  backdrop-filter:blur(18px);
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.nav-inner{
+  height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-family:Manrope,sans-serif;
+  font-weight:800;
+  letter-spacing:7px;
+  font-size:21px;
+}
+
+.logo span{
+  color:var(--dourado);
+}
+
+.logo-mark{
+  width:46px;
+  height:46px;
+  border-radius:15px;
+  overflow:hidden;
+  background:linear-gradient(145deg,var(--azul2),var(--azul));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(199,164,106,.35);
+  box-shadow:0 12px 35px rgba(0,0,0,.25);
+}
+
+.logo-mark img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.menu{
+  display:flex;
+  align-items:center;
+  gap:28px;
+  color:rgba(255,255,255,.72);
+  font-size:14px;
+}
+
+.menu a:hover{
+  color:#fff;
+}
+
+.btn-small{
+  padding:12px 18px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--dourado),#E3C986);
+  color:#14262C;
+  font-weight:800;
+}
+
+.hero{
+  min-height:100vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  overflow:hidden;
+  background:
+    radial-gradient(circle at 82% 18%,rgba(138,174,146,.24),transparent 32%),
+    radial-gradient(circle at 12% 88%,rgba(199,164,106,.16),transparent 35%),
+    linear-gradient(145deg,var(--azul),var(--azul2));
+}
+
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:auto -10% -120px -10%;
+  height:360px;
+  background:
+    repeating-radial-gradient(ellipse at center,
+    rgba(199,164,106,.22) 0px,
+    rgba(199,164,106,.22) 1px,
+    transparent 2px,
+    transparent 20px);
+  transform:scaleY(.34);
+  opacity:.32;
+}
+
+.hero-grid{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:70px;
+  align-items:center;
+  padding-top:130px;
+  padding-bottom:80px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 16px;
+  border-radius:999px;
+  background:rgba(199,164,106,.09);
+  border:1px solid rgba(199,164,106,.30);
+  color:var(--dourado);
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:28px;
+}
+
+h1{
+  font-family:Manrope,sans-serif;
+  font-size:clamp(48px,8vw,92px);
+  line-height:.95;
+  letter-spacing:-4px;
+  margin-bottom:28px;
+}
+
+h1 span{
+  color:var(--dourado);
+}
+
+.hero-text{
+  font-size:20px;
+  line-height:1.8;
+  color:var(--muted);
+  max-width:660px;
+}
+
+.actions{
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-top:42px;
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  padding:18px 28px;
+  border-radius:18px;
+  font-weight:800;
+  transition:.22s ease;
+}
+
+.btn-primary{
+  background:linear-gradient(135deg,var(--dourado),#E3C986);
+  color:#14262C;
+  box-shadow:0 18px 50px rgba(199,164,106,.23);
+}
+
+.btn-secondary{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+}
+
+.mockup{
+  position:relative;
+}
+
+.phone{
+  width:min(390px,100%);
+  margin:auto;
+  padding:14px;
+  border-radius:44px;
+  background:linear-gradient(145deg,#101010,#3b3b3b);
+  box-shadow:var(--shadow);
+}
+
+.screen{
+  min-height:720px;
+  border-radius:34px;
+  padding:28px;
+  background:
+    radial-gradient(circle at top right,rgba(138,174,146,.22),transparent 40%),
+    linear-gradient(160deg,#061D26,#0F3443);
+  overflow:hidden;
+}
+
+.screen-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:34px;
+}
+
+.app-logo{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  letter-spacing:4px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.app-logo img{
+  width:30px;
+  height:30px;
+  border-radius:9px;
+  object-fit:cover;
+  display:block;
+}
+
+.search{
+  margin:24px 0;
+  padding:15px 16px;
+  border-radius:16px;
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.10);
+  color:rgba(255,255,255,.55);
+  font-size:13px;
+}
+
+.quick{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+
+.tile{
+  padding:18px;
+  min-height:112px;
+  border-radius:20px;
+  background:rgba(255,255,255,.065);
+  border:1px solid rgba(255,255,255,.10);
+}
+
+.tile b{
+  display:block;
+  margin-top:18px;
+}
+
+.icon{
+  color:var(--dourado);
+  font-size:24px;
+}
+
+.result{
+  margin-top:22px;
+  padding:24px;
+  border-radius:26px;
+  background:linear-gradient(145deg,rgba(199,164,106,.18),rgba(255,255,255,.05));
+  border:1px solid rgba(199,164,106,.22);
+}
+
+.result strong{
+  font-size:52px;
+  color:var(--dourado);
+}
+
+.section{
+  padding:100px 0;
+}
+
+.section-title{
+  max-width:760px;
+  margin-bottom:56px;
+}
+
+.kicker{
+  color:var(--dourado);
+  font-size:13px;
+  text-transform:uppercase;
+  letter-spacing:2px;
+  font-weight:800;
+  margin-bottom:14px;
+}
+
+h2{
+  font-family:Manrope,sans-serif;
+  font-size:clamp(36px,5vw,58px);
+  line-height:1.05;
+  letter-spacing:-2px;
+}
+
+.section-title p{
+  margin-top:22px;
+  font-size:18px;
+  line-height:1.8;
+  color:var(--muted);
+}
+
+.grid-3{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+
+.card{
+  padding:34px;
+  border-radius:30px;
+  background:var(--card);
+  border:1px solid var(--border);
+}
+
+.card h3{
+  font-size:22px;
+  margin:20px 0 14px;
+}
+
+.card p{
+  line-height:1.8;
+  color:var(--muted);
+}
+
+.plan-section{
+  background:#081B22;
+}
+
+.pricing{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:26px;
+}
+
+.plan{
+  position:relative;
+  padding:38px;
+  border-radius:34px;
+  background:var(--card);
+  border:1px solid var(--border);
+  overflow:hidden;
+}
+
+.plan.popular{
+  border-color:rgba(199,164,106,.38);
+  transform:scale(1.03);
+}
+
+.plan.popular::before{
+  content:"Mais escolhido";
+  position:absolute;
+  top:24px;
+  right:-42px;
+  padding:8px 44px;
+  background:var(--dourado);
+  color:#14262C;
+  font-size:12px;
+  font-weight:900;
+  transform:rotate(40deg);
+}
+
+.plan h3{
+  font-size:28px;
+  margin-bottom:8px;
+}
+
+.plan small{
+  color:rgba(255,255,255,.58);
+}
+
+.price{
+  margin:28px 0;
+  font-family:Manrope,sans-serif;
+  font-size:58px;
+  font-weight:800;
+  letter-spacing:-3px;
+}
+
+.price span{
+  font-size:18px;
+  color:rgba(255,255,255,.62);
+}
+
+.plan ul{
+  list-style:none;
+  display:grid;
+  gap:15px;
+  margin-bottom:32px;
+}
+
+.plan li{
+  color:rgba(255,255,255,.75);
+  line-height:1.5;
+}
+
+.check{
+  color:var(--dourado);
+  font-weight:900;
+  margin-right:8px;
+}
+
+.cta{
+  text-align:center;
+  background:
+    radial-gradient(circle at center,rgba(199,164,106,.16),transparent 38%),
+    linear-gradient(145deg,var(--azul),var(--azul2));
+}
+
+.cta p{
+  max-width:760px;
+  margin:22px auto 0;
+  color:var(--muted);
+  font-size:20px;
+  line-height:1.8;
+}
+
+footer{
+  padding:36px 0;
+  border-top:1px solid rgba(255,255,255,.08);
+  color:rgba(255,255,255,.55);
+  font-size:14px;
+}
+
+@media(max-width:950px){
+  .hero-grid,
+  .grid-3,
+  .pricing{
+    grid-template-columns:1fr;
+  }
+
+  .menu a:not(.btn-small){
+    display:none;
+  }
+
+  .hero-grid{
+    gap:40px;
+  }
+
+  .phone{
+    margin-top:20px;
+  }
+
+  .plan.popular{
+    transform:none;
+  }
+}
+
+@media(max-width:520px){
+  .logo{
+    font-size:17px;
+    letter-spacing:5px;
+  }
+
+  h1{
+    font-size:50px;
+  }
+
+  .btn{
+    width:100%;
+  }
+
+  .screen{
+    min-height:auto;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="nav">
+  <div class="container nav-inner">
+
+    <a class="logo" href="#">
+      <div class="logo-mark">
+        <img src="emergys-logo.png" alt="Emergys">
+      </div>
+      EMERG<span>YS</span>
+    </a>
+
+    <div class="menu">
+      <a href="#sobre">Sobre</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#planos">Planos</a>
+
+      <a class="btn-small" href="app/index.html">
+        Acessar app
+      </a>
+    </div>
+
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero-grid">
+
+    <div>
+
+      <div class="badge">
+        Healthtech · Inteligência clínica · Decisão rápida
+      </div>
+
+      <h1>
+        Clareza em momentos <span>críticos.</span>
+      </h1>
+
+      <p class="hero-text">
+        A Emergys transforma conhecimento médico em decisões rápidas,
+        organizadas e seguras.
+        <br><br>
+        Uma plataforma de inteligência clínica para profissionais
+        que precisam de precisão quando segundos importam.
+      </p>
+
+      <div class="actions">
+
+        <a class="btn btn-primary" href="app/index.html">
+          Acessar app
+        </a>
+
+        <a class="btn btn-secondary" href="#planos">
+          Ver planos
+        </a>
+
+      </div>
+
+    </div>
+
+    <div class="mockup">
+
+      <div class="phone">
+
+        <div class="screen">
+
+          <div class="screen-top">
+
+            <div class="app-logo">
+              <img src="emergys-logo.png" alt="Emergys">
+              EMERGYS
+            </div>
+
+            <div>☰</div>
+
+          </div>
+
+          <h3 style="font-size:28px;">
+            Olá, Dr.
+          </h3>
+
+          <p style="color:rgba(255,255,255,.60);font-size:14px;margin-top:8px;">
+            Como podemos ajudar hoje?
+          </p>
+
+          <div class="search">
+            Buscar calculadoras, medicações, scores...
+          </div>
+
+          <div class="quick">
+
+            <div class="tile">
+              <div class="icon">▦</div>
+              <b>Calculadoras</b>
+            </div>
+
+            <div class="tile">
+              <div class="icon">✚</div>
+              <b>Medicações</b>
+            </div>
+
+            <div class="tile">
+              <div class="icon">★</div>
+              <b>Scores</b>
+            </div>
+
+            <div class="tile">
+              <div class="icon">♡</div>
+              <b>Favoritos</b>
+            </div>
+
+          </div>
+
+          <div class="result">
+
+            <small>Resultado</small>
+            <br><br>
+
+            <strong>4,2</strong> mL/h
+
+            <p style="color:rgba(255,255,255,.65);margin-top:10px;">
+              Adrenalina · Infusão contínua
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</header>
+
+<section class="section" id="sobre">
+
+  <div class="container">
+
+    <div class="section-title">
+
+      <div class="kicker">
+        A plataforma
+      </div>
+
+      <h2>
+        Uma experiência premium para decisões clínicas rápidas.
+      </h2>
+
+      <p>
+        A Emergys reúne ferramentas clínicas,
+        calculadoras, medicações, scores e conteúdos médicos
+        organizados para acesso rápido em momentos críticos.
+      </p>
+
+    </div>
+
+    <div class="grid-3">
+
+      <div class="card">
+
+        <div class="icon">⚡</div>
+
+        <h3>Rapidez</h3>
+
+        <p>
+          Informações críticas acessíveis em segundos,
+          com interface objetiva e baixa carga cognitiva.
+        </p>
+
+      </div>
+
+      <div class="card">
+
+        <div class="icon">🛡</div>
+
+        <h3>Segurança</h3>
+
+        <p>
+          Organização visual para facilitar conferência,
+          reduzir ruído e apoiar decisões com mais clareza.
+        </p>
+
+      </div>
+
+      <div class="card">
+
+        <div class="icon">🧠</div>
+
+        <h3>Inteligência clínica</h3>
+
+        <p>
+          Conteúdo em expansão contínua,
+          pensado para uso real por profissionais de saúde.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section" id="recursos">
+
+  <div class="container">
+
+    <div class="section-title">
+
+      <div class="kicker">
+        Recursos
+      </div>
+
+      <h2>
+        Conteúdo completo, atualizado e em constante expansão.
+      </h2>
+
+      <p>
+        Acesso à plataforma com ferramentas clínicas inteligentes,
+        calculadoras, medicações, infusões, scores
+        e recursos de apoio à decisão.
+      </p>
+
+    </div>
+
+    <div class="grid-3">
+
+      <div class="card">
+
+        <div class="icon">▦</div>
+
+        <h3>Calculadoras clínicas</h3>
+
+        <p>
+          Doses, soluções, eletrólitos,
+          gasometria, queimados,
+          hidratação e outros módulos.
+        </p>
+
+      </div>
+
+      <div class="card">
+
+        <div class="icon">✚</div>
+
+        <h3>Medicações e infusões</h3>
+
+        <p>
+          Organização de doses,
+          apresentações, vias,
+          alertas e montagem
+          de soluções críticas.
+        </p>
+
+      </div>
+
+      <div class="card">
+
+        <div class="icon">★</div>
+
+        <h3>Scores e apoio clínico</h3>
+
+        <p>
+          Ferramentas para avaliação rápida,
+          registro objetivo e tomada
+          de decisão estruturada.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section plan-section" id="planos">
+
+  <div class="container">
+
+    <div class="section-title">
+
+      <div class="kicker">
+        Planos
+      </div>
+
+      <h2>
+        Acesso completo à Emergys.
+      </h2>
+
+      <p>
+        O produto é o mesmo em todos os planos.
+        A diferença está apenas no período contratado
+        e na economia.
+      </p>
+
+    </div>
+
+    <div class="pricing">
+
+      <div class="plan">
+
+        <h3>Mensal</h3>
+
+        <small>Flexibilidade mensal</small>
+
+        <div class="price">
+          39<span>,90/mês</span>
+        </div>
+
+        <ul>
+          <li><span class="check">✓</span>Acesso completo à plataforma</li>
+          <li><span class="check">✓</span>Ferramentas clínicas inteligentes</li>
+          <li><span class="check">✓</span>Conteúdo em expansão contínua</li>
+        </ul>
+
+        <a class="btn btn-secondary" href="#">
+          Assinar mensal
+        </a>
+
+      </div>
+
+      <div class="plan popular">
+
+        <h3>Semestral</h3>
+
+        <small>Melhor equilíbrio</small>
+
+        <div class="price">
+          29<span>,90/mês</span>
+        </div>
+
+        <ul>
+          <li><span class="check">✓</span>Acesso completo à plataforma</li>
+          <li><span class="check">✓</span>Ferramentas clínicas inteligentes</li>
+          <li><span class="check">✓</span>Conteúdo em expansão contínua</li>
+        </ul>
+
+        <a class="btn btn-primary" href="#">
+          Assinar semestral
+        </a>
+
+      </div>
+
+      <div class="plan">
+
+        <h3>Anual</h3>
+
+        <small>Maior economia</small>
+
+        <div class="price">
+          24<span>,90/mês</span>
+        </div>
+
+        <ul>
+          <li><span class="check">✓</span>Acesso completo à plataforma</li>
+          <li><span class="check">✓</span>Ferramentas clínicas inteligentes</li>
+          <li><span class="check">✓</span>Conteúdo em expansão contínua</li>
+        </ul>
+
+        <a class="btn btn-secondary" href="#">
+          Assinar anual
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<section class="section cta">
+
+  <div class="container">
+
+    <div class="kicker">
+      Emergys
+    </div>
+
+    <h2>
+      Precisão quando segundos importam.
+    </h2>
+
+    <p>
+      Uma plataforma premium para transformar
+      conhecimento médico em decisões rápidas,
+      organizadas e seguras.
+    </p>
+
+    <div class="actions" style="justify-content:center;">
+
+      <a class="btn btn-primary" href="app/index.html">
+        Acessar app
+      </a>
+
+      <a class="btn btn-secondary" href="#planos">
+        Ver planos
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+<footer>
+
+  <div class="container">
+    Emergys © 2026 · Inteligência para decisões críticas.
+  </div>
+
+</footer>
+
+</body>
+</html>
