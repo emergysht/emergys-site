@@ -1,0 +1,38 @@
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const supabaseUrl = 'https://uuiuepdpjhpyxhgmveur.supabase.co';
+
+const supabaseKey = 'sb_publishable_AVT257sp6FQB8ZWvjyEfwQ_L2jfJ3tS';
+
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+async function verificarLogin(){
+
+  const { data: { session } } = await supabase.auth.getSession();
+
+  if(!session){
+    window.location.href = "../login.html";
+    return;
+  }
+
+  const user = session.user;
+
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+
+  if(!profile || profile.ativo !== true){
+    await supabase.auth.signOut();
+    window.location.href = "../login.html";
+    return;
+  }
+
+}
+
+verificarLogin();
+
+</script>
