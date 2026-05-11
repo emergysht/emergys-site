@@ -772,56 +772,90 @@ input:focus,select:focus,textarea:focus{
 .supabase-logout:hover{background:#0F3443}
 
 </style>
-</head>
-<body>
+
+
+<!-- Proteção de acesso Emergys via Supabase -->
+<style id="emergys-auth-hide">
+body{visibility:hidden!important;}
+</style>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <script>
-const supabaseUrl = 'https://uuiuepdpjhpyxhgmveur.supabase.co';
-const supabaseKey = 'sb_publishable_AVT257sp6FQB8ZWvjyEfwQ_L2jfJ3tS';
-const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+const EMERGYS_SUPABASE_URL = "https://uuiuepdpjhpyxhgmveur.supabase.co";
+const EMERGYS_SUPABASE_KEY = "sb_publishable_AVT257sp6FQB8ZWvjyEfwQ_L2jfJ3tS";
 
-async function verificarLogin(){
-  const { data: { session } } = await supabase.auth.getSession();
-  if(!session){
-    window.location.href = "../login.html";
-    return;
-  }
+const emergysSupabase = window.supabase.createClient(
+  EMERGYS_SUPABASE_URL,
+  EMERGYS_SUPABASE_KEY
+);
 
-  const user = session.user;
+window.sairEmergys = async function(){
+  await emergysSupabase.auth.signOut();
+  window.location.replace("../login.html");
+};
 
-  const { data: profile, error } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('id', user.id)
-    .single();
+(function protegerEmergys(){
+  async function bloquearOuLiberar(){
+    try{
+      const { data: { session }, error: sessionError } = await emergysSupabase.auth.getSession();
 
-  if(error || !profile || profile.ativo !== true){
-    await supabase.auth.signOut();
-    window.location.href = "../login.html";
-    return;
-  }
+      if(sessionError || !session){
+        window.location.replace("../login.html");
+        return;
+      }
 
-  if(profile.validade){
-    const hoje = new Date();
-    hoje.setHours(0,0,0,0);
-    const validade = new Date(profile.validade + 'T23:59:59');
-    if(validade < hoje){
-      await supabase.auth.signOut();
-      window.location.href = "../login.html?expired=1";
-      return;
+      const { data: profile, error: profileError } = await emergysSupabase
+        .from("profiles")
+        .select("id,email,ativo,plano,validade")
+        .eq("id", session.user.id)
+        .single();
+
+      if(profileError || !profile || profile.ativo !== true){
+        await emergysSupabase.auth.signOut();
+        window.location.replace("../login.html");
+        return;
+      }
+
+      if(profile.validade){
+        const hoje = new Date();
+        hoje.setHours(0,0,0,0);
+
+        const validade = new Date(profile.validade + "T00:00:00");
+        validade.setHours(23,59,59,999);
+
+        if(validade < hoje){
+          await emergysSupabase.auth.signOut();
+          window.location.replace("../login.html?expired=1");
+          return;
+        }
+      }
+
+      function liberarPagina(){
+        const bloqueioVisual = document.getElementById("emergys-auth-hide");
+        if(bloqueioVisual){bloqueioVisual.remove();}
+        if(document.body){document.body.style.visibility = "visible";}
+      }
+
+      if(document.readyState === "loading"){
+        document.addEventListener("DOMContentLoaded", liberarPagina);
+      }else{
+        liberarPagina();
+      }
+
+    }catch(e){
+      window.location.replace("../login.html");
     }
   }
-}
 
-async function sairEmergys(){
-  await supabase.auth.signOut();
-  window.location.href = "../login.html";
-}
-
-verificarLogin();
+  bloquearOuLiberar();
+})();
 </script>
 
-<div class="modal" id="termsModal" style="display: none;">
+</head>
+<body>
+
+<div class="modal" id="termsModal" style="display: flex;">
 <div class="modal-box">
 <h2>Termo de uso e responsabilidade médica</h2>
 <p>
