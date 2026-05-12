@@ -3,58 +3,211 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Emergys | Login</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-body{
+:root{
+  --azul:#061D26;
+  --azul2:#0F3443;
+  --dourado:#C7A46A;
+  --salvia:#8AAE92;
+  --branco:#FFFFFF;
+  --muted:rgba(255,255,255,.70);
+  --erro:#B64A4A;
+  --sucesso:#8AAE92;
+}
+
+*{
   margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
   min-height:100vh;
-  font-family:Arial,sans-serif;
-  background:linear-gradient(145deg,#061D26,#0F3443);
+  font-family:Inter,sans-serif;
+  background:
+    radial-gradient(circle at 75% 20%,rgba(138,174,146,.24),transparent 32%),
+    radial-gradient(circle at 15% 85%,rgba(199,164,106,.17),transparent 36%),
+    linear-gradient(145deg,var(--azul),var(--azul2));
   display:flex;
   align-items:center;
   justify-content:center;
-  color:white;
+  padding:24px;
+  color:#fff;
 }
+
 .card{
-  width:90%;
-  max-width:420px;
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.14);
-  border-radius:28px;
-  padding:32px;
-}
-h1{margin:0 0 12px;}
-p{color:rgba(255,255,255,.7);}
-input,button{
   width:100%;
-  box-sizing:border-box;
-  padding:16px;
-  margin-top:12px;
-  border-radius:14px;
-  font-size:16px;
+  max-width:440px;
+  border-radius:34px;
+  padding:34px;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.13);
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 90px rgba(0,0,0,.35);
 }
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:30px;
+}
+
+.logo-mark{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  background:linear-gradient(145deg,var(--azul2),var(--azul));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(199,164,106,.35);
+}
+
+.logo-mark svg{
+  width:42px;
+  height:42px;
+  overflow:visible;
+}
+
+.logo-text{
+  font-family:Manrope,sans-serif;
+  font-size:23px;
+  letter-spacing:6px;
+  font-weight:800;
+}
+
+.logo-text span{
+  color:var(--dourado);
+}
+
+.logo-sub{
+  display:block;
+  margin-top:4px;
+  font-family:Inter,sans-serif;
+  font-size:9px;
+  letter-spacing:.28em;
+  color:var(--salvia);
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+h1{
+  font-family:Manrope,sans-serif;
+  font-size:36px;
+  line-height:1.05;
+  letter-spacing:-1.4px;
+  margin-bottom:12px;
+}
+
+p{
+  color:var(--muted);
+  line-height:1.7;
+  font-size:15px;
+  margin-bottom:28px;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  color:var(--dourado);
+  font-size:13px;
+  font-weight:800;
+}
+
 input{
-  background:rgba(255,255,255,.08);
-  border:1px solid rgba(255,255,255,.18);
-  color:white;
-}
-button{
-  border:0;
-  background:linear-gradient(135deg,#C7A46A,#E3C986);
-  color:#14262C;
-  font-weight:900;
-}
-.msg{
-  margin-top:16px;
-  padding:14px;
-  border-radius:14px;
+  width:100%;
+  padding:16px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.14);
   background:rgba(255,255,255,.08);
   color:#fff;
-  font-size:14px;
+  font-size:15px;
+  outline:none;
+  margin-bottom:18px;
+}
+
+input::placeholder{
+  color:rgba(255,255,255,.38);
+}
+
+input:focus{
+  border-color:var(--dourado);
+  box-shadow:0 0 0 3px rgba(199,164,106,.16);
+}
+
+button{
+  width:100%;
+  border:0;
+  padding:17px;
+  border-radius:18px;
+  background:linear-gradient(135deg,var(--dourado),#E3C986);
+  color:#14262C;
+  font-weight:900;
+  cursor:pointer;
+  font-size:15px;
+  transition:.2s ease;
+}
+
+button:hover{
+  transform:translateY(-1px);
+}
+
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.msg{
+  display:none;
+  margin-top:18px;
+  padding:14px;
+  border-radius:15px;
+  font-size:13px;
+  line-height:1.45;
   white-space:pre-wrap;
+}
+
+.msg.info{
+  display:block;
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.msg.erro{
+  display:block;
+  background:rgba(182,74,74,.14);
+  color:#FFD8D8;
+  border:1px solid rgba(182,74,74,.35);
+}
+
+.msg.sucesso{
+  display:block;
+  background:rgba(138,174,146,.14);
+  color:#DDF5E4;
+  border:1px solid rgba(138,174,146,.38);
+}
+
+.footer{
+  margin-top:22px;
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+}
+
+.footer a{
+  color:var(--dourado);
+  text-decoration:none;
+  font-weight:700;
 }
 </style>
 </head>
@@ -62,15 +215,47 @@ button{
 <body>
 
 <div class="card">
-  <h1>Emergys</h1>
-  <p>Acesso profissional</p>
 
-  <input id="email" type="email" placeholder="E-mail">
-  <input id="senha" type="password" placeholder="Senha">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 140 140" fill="none">
+        <path d="M25 98C51 88 74 67 100 30" stroke="#C7A46A" stroke-width="9" stroke-linecap="round"/>
+        <path d="M30 111C58 101 84 78 113 44" stroke="#8AAE92" stroke-width="7" stroke-linecap="round"/>
+        <path d="M42 124C70 112 96 94 124 64" stroke="#C7A46A" stroke-width="5" stroke-linecap="round"/>
+        <path d="M100 30L124 34L113 11" stroke="#C7A46A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
 
-  <button id="btnLogin" type="button">Acessar plataforma</button>
+    <div>
+      <div class="logo-text">EMERG<span>YS</span></div>
+      <span class="logo-sub">Health Tech</span>
+    </div>
+  </div>
 
-  <div id="msg" class="msg">Aguardando login...</div>
+  <h1>Acesso profissional</h1>
+
+  <p>
+    Entre com seu e-mail e senha para acessar a plataforma Emergys.
+  </p>
+
+  <label>E-mail</label>
+  <input type="email" id="email" placeholder="seuemail@email.com" autocomplete="email">
+
+  <label>Senha</label>
+  <input type="password" id="senha" placeholder="Digite sua senha" autocomplete="current-password">
+
+  <button id="btnLogin" type="button">
+    Acessar plataforma
+  </button>
+
+  <div id="msg" class="msg info">
+    Digite seu e-mail e senha para continuar.
+  </div>
+
+  <div class="footer">
+    Emergys © 2026 · <a href="index.html">Voltar ao site</a>
+  </div>
+
 </div>
 
 <script>
@@ -80,29 +265,38 @@ const SUPABASE_KEY = "sb_publishable_AVT257sp6FQB8ZWvjyEfwQ_L2jfJ3tS";
 const msg = document.getElementById("msg");
 const btn = document.getElementById("btnLogin");
 
-function mostrar(texto){
+function mostrar(texto, tipo="info"){
+  msg.className = "msg " + tipo;
   msg.textContent = texto;
 }
 
 if(!window.supabase){
-  mostrar("Erro: biblioteca Supabase não carregou.");
-}else{
-  mostrar("Supabase carregado. Digite e-mail e senha.");
+  mostrar("Erro: não foi possível carregar a autenticação. Verifique sua conexão e tente novamente.", "erro");
 }
 
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-btn.addEventListener("click", async function(){
+btn.addEventListener("click", login);
 
-  mostrar("Verificando login...");
+document.getElementById("senha").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    login();
+  }
+});
+
+async function login(){
 
   const email = document.getElementById("email").value.trim();
   const senha = document.getElementById("senha").value.trim();
 
   if(!email || !senha){
-    mostrar("Preencha e-mail e senha.");
+    mostrar("Preencha e-mail e senha para continuar.", "erro");
     return;
   }
+
+  btn.disabled = true;
+  btn.textContent = "Verificando...";
+  mostrar("Verificando suas credenciais...", "info");
 
   try{
 
@@ -112,16 +306,20 @@ btn.addEventListener("click", async function(){
     });
 
     if(error){
-      mostrar("Erro no login:\n" + error.message);
+      mostrar("E-mail ou senha inválidos. Verifique os dados e tente novamente.", "erro");
+      btn.disabled = false;
+      btn.textContent = "Acessar plataforma";
       return;
     }
 
     if(!data || !data.user){
-      mostrar("Login sem retorno de usuário.");
+      mostrar("Não foi possível identificar o usuário. Tente novamente.", "erro");
+      btn.disabled = false;
+      btn.textContent = "Acessar plataforma";
       return;
     }
 
-    mostrar("Login aceito. Verificando assinatura...");
+    mostrar("Login aceito. Verificando assinatura...", "info");
 
     const { data: profile, error: profileError } = await supabaseClient
       .from("profiles")
@@ -130,20 +328,26 @@ btn.addEventListener("click", async function(){
       .single();
 
     if(profileError){
-      mostrar("Erro ao consultar profile:\n" + profileError.message);
+      mostrar("Não foi possível consultar sua assinatura. Tente novamente ou acione o suporte.", "erro");
       await supabaseClient.auth.signOut();
+      btn.disabled = false;
+      btn.textContent = "Acessar plataforma";
       return;
     }
 
     if(!profile){
-      mostrar("Usuário sem profile liberado.");
+      mostrar("Usuário sem assinatura vinculada. Acione o suporte para liberação do acesso.", "erro");
       await supabaseClient.auth.signOut();
+      btn.disabled = false;
+      btn.textContent = "Acessar plataforma";
       return;
     }
 
     if(profile.ativo !== true){
-      mostrar("Assinatura inativa.");
+      mostrar("Sua assinatura está inativa. Regularize o acesso para continuar.", "erro");
       await supabaseClient.auth.signOut();
+      btn.disabled = false;
+      btn.textContent = "Acessar plataforma";
       return;
     }
 
@@ -154,20 +358,23 @@ btn.addEventListener("click", async function(){
       const validade = new Date(profile.validade + "T00:00:00");
 
       if(validade < hoje){
-        mostrar("Acesso expirado.");
+        mostrar("Seu acesso expirou. Renove sua assinatura para continuar.", "erro");
         await supabaseClient.auth.signOut();
+        btn.disabled = false;
+        btn.textContent = "Acessar plataforma";
         return;
       }
     }
 
-    mostrar("Acesso liberado. Redirecionando...");
+    mostrar("Acesso liberado. Redirecionando...", "sucesso");
     window.location.href = "app/";
 
   }catch(e){
-    mostrar("Erro inesperado:\n" + e.message);
+    mostrar("Erro inesperado. Verifique sua conexão e tente novamente.", "erro");
+    btn.disabled = false;
+    btn.textContent = "Acessar plataforma";
   }
-
-});
+}
 </script>
 
 </body>
