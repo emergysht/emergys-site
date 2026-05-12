@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
+<html lang="pt-BR"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Emergys | Clareza em momentos críticos</title>
+<title>Emergys Health Tech | Clareza em momentos críticos</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Manrope:wght@500;600;700;800&amp;display=swap" rel="stylesheet">
 
 <style>
 :root{
@@ -80,6 +78,21 @@ a{
 
 .logo span{
   color:var(--dourado);
+}
+
+.logo-text{
+  display:flex;
+  flex-direction:column;
+  line-height:1;
+}
+
+.logo-sub{
+  margin-top:6px;
+  color:var(--salvia);
+  font-size:10px;
+  letter-spacing:3px;
+  font-weight:800;
+  text-transform:uppercase;
 }
 
 .logo-mark{
@@ -510,6 +523,11 @@ footer{
     letter-spacing:5px;
   }
 
+  .logo-sub{
+    font-size:8px;
+    letter-spacing:2px;
+  }
+
   h1{
     font-size:50px;
   }
@@ -538,55 +556,31 @@ footer{
         <svg viewBox="0 0 130 130" aria-hidden="true">
 
           <defs>
-            <linearGradient
-              id="goldLogo"
-              x1="20"
-              y1="110"
-              x2="110"
-              y2="10"
-              gradientUnits="userSpaceOnUse">
+            <linearGradient id="goldLogo" x1="20" y1="110" x2="110" y2="10" gradientUnits="userSpaceOnUse">
 
-              <stop offset="0%" stop-color="#B88A45"/>
-              <stop offset="45%" stop-color="#C7A46A"/>
-              <stop offset="100%" stop-color="#E3C986"/>
+              <stop offset="0%" stop-color="#B88A45"></stop>
+              <stop offset="45%" stop-color="#C7A46A"></stop>
+              <stop offset="100%" stop-color="#E3C986"></stop>
 
             </linearGradient>
           </defs>
 
-          <path
-            d="M22 90C45 82 68 62 92 26"
-            stroke="url(#goldLogo)"
-            stroke-width="9"
-            stroke-linecap="round"
-            fill="none"/>
+          <path d="M22 90C45 82 68 62 92 26" stroke="url(#goldLogo)" stroke-width="9" stroke-linecap="round" fill="none"></path>
 
-          <path
-            d="M28 102C55 92 78 72 106 40"
-            stroke="#8AAE92"
-            stroke-width="7"
-            stroke-linecap="round"
-            fill="none"/>
+          <path d="M28 102C55 92 78 72 106 40" stroke="#8AAE92" stroke-width="7" stroke-linecap="round" fill="none"></path>
 
-          <path
-            d="M38 114C68 104 91 86 118 58"
-            stroke="url(#goldLogo)"
-            stroke-width="5"
-            stroke-linecap="round"
-            fill="none"/>
+          <path d="M38 114C68 104 91 86 118 58" stroke="url(#goldLogo)" stroke-width="5" stroke-linecap="round" fill="none"></path>
 
-          <path
-            d="M92 26L116 30L105 7"
-            stroke="url(#goldLogo)"
-            stroke-width="8"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            fill="none"/>
+          <path d="M92 26L116 30L105 7" stroke="url(#goldLogo)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
 
         </svg>
 
       </div>
 
-      EMERG<span>YS</span>
+      <div class="logo-text">
+        <div>EMERG<span>YS</span></div>
+        <div class="logo-sub">Health Tech</div>
+      </div>
 
     </a>
 
@@ -597,7 +591,7 @@ footer{
       <a href="#planos">Planos</a>
 
       <a class="btn-small" href="login.html">
-        Acessar app
+        Acessar plataforma
       </a>
 
     </div>
@@ -636,10 +630,10 @@ footer{
       <div class="actions">
 
         <a class="btn btn-primary" href="login.html">
-          Acessar app
+          Acessar plataforma
         </a>
 
-        <a class="btn btn-secondary" href="#planos">
+        <a class="btn btn-secondary" href="assinar.html">
           Ver planos
         </a>
 
@@ -660,49 +654,22 @@ footer{
               <svg viewBox="0 0 130 130" aria-hidden="true">
 
                 <defs>
-                  <linearGradient
-                    id="goldLogoSmall"
-                    x1="20"
-                    y1="110"
-                    x2="110"
-                    y2="10"
-                    gradientUnits="userSpaceOnUse">
+                  <linearGradient id="goldLogoSmall" x1="20" y1="110" x2="110" y2="10" gradientUnits="userSpaceOnUse">
 
-                    <stop offset="0%" stop-color="#B88A45"/>
-                    <stop offset="45%" stop-color="#C7A46A"/>
-                    <stop offset="100%" stop-color="#E3C986"/>
+                    <stop offset="0%" stop-color="#B88A45"></stop>
+                    <stop offset="45%" stop-color="#C7A46A"></stop>
+                    <stop offset="100%" stop-color="#E3C986"></stop>
 
                   </linearGradient>
                 </defs>
 
-                <path
-                  d="M22 90C45 82 68 62 92 26"
-                  stroke="url(#goldLogoSmall)"
-                  stroke-width="9"
-                  stroke-linecap="round"
-                  fill="none"/>
+                <path d="M22 90C45 82 68 62 92 26" stroke="url(#goldLogoSmall)" stroke-width="9" stroke-linecap="round" fill="none"></path>
 
-                <path
-                  d="M28 102C55 92 78 72 106 40"
-                  stroke="#8AAE92"
-                  stroke-width="7"
-                  stroke-linecap="round"
-                  fill="none"/>
+                <path d="M28 102C55 92 78 72 106 40" stroke="#8AAE92" stroke-width="7" stroke-linecap="round" fill="none"></path>
 
-                <path
-                  d="M38 114C68 104 91 86 118 58"
-                  stroke="url(#goldLogoSmall)"
-                  stroke-width="5"
-                  stroke-linecap="round"
-                  fill="none"/>
+                <path d="M38 114C68 104 91 86 118 58" stroke="url(#goldLogoSmall)" stroke-width="5" stroke-linecap="round" fill="none"></path>
 
-                <path
-                  d="M92 26L116 30L105 7"
-                  stroke="url(#goldLogoSmall)"
-                  stroke-width="8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  fill="none"/>
+                <path d="M92 26L116 30L105 7" stroke="url(#goldLogoSmall)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
 
               </svg>
 
@@ -958,7 +925,7 @@ footer{
           <li><span class="check">✓</span>Conteúdo em expansão contínua</li>
         </ul>
 
-        <a class="btn btn-secondary" href="login.html">
+        <a class="btn btn-secondary" href="assinar.html">
           Assinar mensal
         </a>
 
@@ -980,7 +947,7 @@ footer{
           <li><span class="check">✓</span>Conteúdo em expansão contínua</li>
         </ul>
 
-        <a class="btn btn-primary" href="login.html">
+        <a class="btn btn-primary" href="assinar.html">
           Assinar semestral
         </a>
 
@@ -1002,7 +969,7 @@ footer{
           <li><span class="check">✓</span>Conteúdo em expansão contínua</li>
         </ul>
 
-        <a class="btn btn-secondary" href="login.html">
+        <a class="btn btn-secondary" href="assinar.html">
           Assinar anual
         </a>
 
@@ -1019,7 +986,7 @@ footer{
   <div class="container">
 
     <div class="kicker">
-      Emergys
+      Emergys Health Tech
     </div>
 
     <h2>
@@ -1035,10 +1002,10 @@ footer{
     <div class="actions" style="justify-content:center;">
 
       <a class="btn btn-primary" href="login.html">
-        Acessar app
+        Acessar plataforma
       </a>
 
-      <a class="btn btn-secondary" href="#planos">
+      <a class="btn btn-secondary" href="assinar.html">
         Ver planos
       </a>
 
@@ -1051,10 +1018,11 @@ footer{
 <footer>
 
   <div class="container">
-    Emergys © 2026 · Inteligência para decisões críticas.
+    Emergys Health Tech © 2026 · Inteligência para decisões críticas.
   </div>
 
 </footer>
 
-</body>
-</html>
+
+
+</body></html>
