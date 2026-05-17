@@ -2,9 +2,7 @@ import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 
 export const config = {
-  api: {
-    bodyParser: false,
-  },
+  api: { bodyParser: false },
 };
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -16,11 +14,9 @@ const supabase = createClient(
 
 async function getRawBody(readable) {
   const chunks = [];
-
   for await (const chunk of readable) {
     chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
   }
-
   return Buffer.concat(chunks);
 }
 
@@ -32,18 +28,24 @@ function calcularValidade(plan, durationDays) {
     return expiresAt;
   }
 
-  if (plan === "semestral") {
-    expiresAt.setMonth(expiresAt.getMonth() + 6);
-    return expiresAt;
-  }
+  if (plan === "semestral") expiresAt.setMonth(expiresAt.getMonth() + 6);
+  else if (plan === "anual") expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+  else expiresAt.setMonth(expiresAt.getMonth() + 1);
 
-  if (plan === "anual") {
-    expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-    return expiresAt;
-  }
-
-  expiresAt.setMonth(expiresAt.getMonth() + 1);
   return expiresAt;
+}
+
+async function buscarUsuarioPorEmail(email) {
+  const { data, error } = await supabase.auth.admin.listUsers({
+    page: 1,
+    perPage: 1000,
+  });
+
+  if (error) throw error;
+
+  return data.users.find(
+    (user) => user.email?.toLowerCase() === email.toLowerCase()
+  );
 }
 
 export default async function handler(req, res) {
@@ -86,7 +88,6 @@ export default async function handler(req, res) {
 
       const plan = session.metadata?.plan || "mensal";
       const durationDays = session.metadata?.duration_days || null;
-
       const expiresAt = calcularValidade(plan, durationDays);
 
       const { error: subscriptionError } = await supabase
@@ -102,9 +103,7 @@ export default async function handler(req, res) {
             stripe_session_id: session.id,
             updated_at: new Date().toISOString(),
           },
-          {
-            onConflict: "email",
-          }
+          { onConflict: "email" }
         );
 
       if (subscriptionError) {
@@ -114,28 +113,9 @@ export default async function handler(req, res) {
         });
       }
 
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .upsert(
-          {
-            email,
-            ativo: true,
-            plano: plan,
-            validade: expiresAt.toISOString().slice(0, 10),
-          },
-          {
-            onConflict: "email",
-          }
-        );
+      let userId = null;
 
-      if (profileError) {
-        console.error("Erro ao salvar profile:", profileError);
-        return res.status(500).json({
-          error: profileError.message,
-        });
-      }
-
-      const { error: inviteError } =
+      const { data: inviteData, error: inviteError } =
         await supabase.auth.admin.inviteUserByEmail(email, {
           redirectTo: "https://www.emergys.com.br/login.html",
         });
@@ -148,21 +128,48 @@ export default async function handler(req, res) {
           msg.includes("User already registered") ||
           msg.includes("already been registered")
         ) {
-          console.log("Usuário já existia. Assinatura atualizada:", email);
+          const existingUser = await buscarUsuarioPorEmail(email);
+          userId = existingUser?.id || null;
         } else {
           console.error("Erro ao enviar convite Supabase:", inviteError);
           return res.status(500).json({
             error: inviteError.message,
           });
         }
+      } else {
+        userId = inviteData?.user?.id || null;
       }
 
-      console.log("Assinatura liberada e convite processado:", email);
+      if (!userId) {
+        return res.status(500).json({
+          error: "Usuário criado/encontrado, mas ID não localizado no Supabase Auth.",
+        });
+      }
+
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .upsert(
+          {
+            id: userId,
+            email,
+            ativo: true,
+            plano: plan,
+            validade: expiresAt.toISOString().slice(0, 10),
+          },
+          { onConflict: "id" }
+        );
+
+      if (profileError) {
+        console.error("Erro ao salvar profile:", profileError);
+        return res.status(500).json({
+          error: profileError.message,
+        });
+      }
+
+      console.log("Assinatura liberada:", email);
     }
 
-    return res.status(200).json({
-      received: true,
-    });
+    return res.status(200).json({ received: true });
 
   } catch (err) {
     console.error("Erro geral no webhook:", err);
