@@ -166,6 +166,13 @@ button:disabled{
   transform:none;
 }
 
+.secondary-btn{
+  margin-top:12px;
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.14);
+}
+
 .msg{
   display:none;
   margin-top:18px;
@@ -195,6 +202,18 @@ button:disabled{
   background:rgba(138,174,146,.14);
   color:#DDF5E4;
   border:1px solid rgba(138,174,146,.38);
+}
+
+.links{
+  margin-top:18px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.links button{
+  padding:15px;
+  font-size:14px;
 }
 
 .footer{
@@ -248,6 +267,18 @@ button:disabled{
     Acessar plataforma
   </button>
 
+  <div class="links">
+
+    <button class="secondary-btn" id="btnPrimeiroAcesso" type="button">
+      Primeiro acesso / Criar senha
+    </button>
+
+    <button class="secondary-btn" id="btnRecuperar" type="button">
+      Esqueci minha senha
+    </button>
+
+  </div>
+
   <div id="msg" class="msg info">
     Digite seu e-mail e senha para continuar.
   </div>
@@ -264,6 +295,8 @@ const SUPABASE_KEY = "sb_publishable_AVT257sp6FQB8ZWvjyEfwQ_L2jfJ3tS";
 
 const msg = document.getElementById("msg");
 const btn = document.getElementById("btnLogin");
+const btnPrimeiroAcesso = document.getElementById("btnPrimeiroAcesso");
+const btnRecuperar = document.getElementById("btnRecuperar");
 
 function mostrar(texto, tipo="info"){
   msg.className = "msg " + tipo;
@@ -271,12 +304,19 @@ function mostrar(texto, tipo="info"){
 }
 
 if(!window.supabase){
-  mostrar("Erro: não foi possível carregar a autenticação. Verifique sua conexão e tente novamente.", "erro");
+  mostrar("Erro: não foi possível carregar a autenticação.", "erro");
 }
 
-const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 btn.addEventListener("click", login);
+
+btnPrimeiroAcesso.addEventListener("click", criarSenha);
+
+btnRecuperar.addEventListener("click", recuperarSenha);
 
 document.getElementById("senha").addEventListener("keydown", function(e){
   if(e.key === "Enter"){
@@ -290,90 +330,142 @@ async function login(){
   const senha = document.getElementById("senha").value.trim();
 
   if(!email || !senha){
-    mostrar("Preencha e-mail e senha para continuar.", "erro");
+    mostrar("Preencha e-mail e senha.", "erro");
     return;
   }
 
   btn.disabled = true;
   btn.textContent = "Verificando...";
-  mostrar("Verificando suas credenciais...", "info");
 
   try{
 
-    const { data, error } = await supabaseClient.auth.signInWithPassword({
-      email: email,
-      password: senha
-    });
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email,
+        password: senha
+      });
 
     if(error){
-      mostrar("E-mail ou senha inválidos. Verifique os dados e tente novamente.", "erro");
+      mostrar("E-mail ou senha inválidos.", "erro");
       btn.disabled = false;
       btn.textContent = "Acessar plataforma";
       return;
-    }
-
-    if(!data || !data.user){
-      mostrar("Não foi possível identificar o usuário. Tente novamente.", "erro");
-      btn.disabled = false;
-      btn.textContent = "Acessar plataforma";
-      return;
-    }
-
-    mostrar("Login aceito. Verificando assinatura...", "info");
-
-    const { data: profile, error: profileError } = await supabaseClient
-      .from("profiles")
-      .select("*")
-      .eq("id", data.user.id)
-      .single();
-
-    if(profileError){
-      mostrar("Não foi possível consultar sua assinatura. Tente novamente ou acione o suporte.", "erro");
-      await supabaseClient.auth.signOut();
-      btn.disabled = false;
-      btn.textContent = "Acessar plataforma";
-      return;
-    }
-
-    if(!profile){
-      mostrar("Usuário sem assinatura vinculada. Acione o suporte para liberação do acesso.", "erro");
-      await supabaseClient.auth.signOut();
-      btn.disabled = false;
-      btn.textContent = "Acessar plataforma";
-      return;
-    }
-
-    if(profile.ativo !== true){
-      mostrar("Sua assinatura está inativa. Regularize o acesso para continuar.", "erro");
-      await supabaseClient.auth.signOut();
-      btn.disabled = false;
-      btn.textContent = "Acessar plataforma";
-      return;
-    }
-
-    if(profile.validade){
-      const hoje = new Date();
-      hoje.setHours(0,0,0,0);
-
-      const validade = new Date(profile.validade + "T00:00:00");
-
-      if(validade < hoje){
-        mostrar("Seu acesso expirou. Renove sua assinatura para continuar.", "erro");
-        await supabaseClient.auth.signOut();
-        btn.disabled = false;
-        btn.textContent = "Acessar plataforma";
-        return;
-      }
     }
 
     mostrar("Acesso liberado. Redirecionando...", "sucesso");
+
     window.location.href = "app/";
 
   }catch(e){
-    mostrar("Erro inesperado. Verifique sua conexão e tente novamente.", "erro");
+
+    mostrar("Erro inesperado ao realizar login.", "erro");
+
     btn.disabled = false;
     btn.textContent = "Acessar plataforma";
   }
+}
+
+async function criarSenha(){
+
+  const email = document.getElementById("email").value.trim();
+
+  if(!email){
+    mostrar("Digite seu e-mail para receber o convite.", "erro");
+    return;
+  }
+
+  btnPrimeiroAcesso.disabled = true;
+
+  mostrar("Enviando e-mail para criação de senha...", "info");
+
+  try{
+
+    const { error } =
+      await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo:
+            "https://www.emergys.com.br/login.html"
+        }
+      );
+
+    if(error){
+      mostrar(
+        "Não foi possível enviar o e-mail. Verifique o endereço informado.",
+        "erro"
+      );
+
+      btnPrimeiroAcesso.disabled = false;
+
+      return;
+    }
+
+    mostrar(
+      "E-mail enviado com sucesso.\n\nVerifique sua caixa de entrada para criar sua senha.",
+      "sucesso"
+    );
+
+  }catch(e){
+
+    mostrar(
+      "Erro ao solicitar criação de senha.",
+      "erro"
+    );
+  }
+
+  btnPrimeiroAcesso.disabled = false;
+}
+
+async function recuperarSenha(){
+
+  const email = document.getElementById("email").value.trim();
+
+  if(!email){
+    mostrar("Digite seu e-mail para recuperar a senha.", "erro");
+    return;
+  }
+
+  btnRecuperar.disabled = true;
+
+  mostrar("Enviando recuperação de senha...", "info");
+
+  try{
+
+    const { error } =
+      await supabaseClient.auth.resetPasswordForEmail(
+        email,
+        {
+          redirectTo:
+            "https://www.emergys.com.br/login.html"
+        }
+      );
+
+    if(error){
+
+      mostrar(
+        "Não foi possível enviar o e-mail de recuperação.",
+        "erro"
+      );
+
+      btnRecuperar.disabled = false;
+
+      return;
+    }
+
+    mostrar(
+      "E-mail de recuperação enviado com sucesso.",
+      "sucesso"
+    );
+
+  }catch(e){
+
+    mostrar(
+      "Erro ao recuperar senha.",
+      "erro"
+    );
+  }
+
+  btnRecuperar.disabled = false;
 }
 </script>
 
