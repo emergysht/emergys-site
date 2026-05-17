@@ -1,0 +1,511 @@
+<html lang="pt-BR"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Emergys | Termos, Privacidade e Reembolso</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --verde:#0F3443;
+  --verde2:#123F4E;
+  --dourado:#C7A46A;
+  --off:#F5F3EE;
+  --off2:#E7ECE8;
+  --texto:#203038;
+  --cinza:#6D7C7E;
+  --vermelho:#B64A4A;
+  --vermelho-bg:#FFF1F0;
+  --verde-bg:#EDF4EF;
+  --dour-bg:#F7F0E3;
+  --salvia:#8AAE92;
+  --azul2:#061D26;
+  --sombra:0 22px 60px rgba(6,29,38,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:
+    radial-gradient(circle at top right,rgba(138,174,146,.18),transparent 32%),
+    linear-gradient(180deg,#F8F7F2 0%,#E9EFEA 100%);
+  color:var(--texto);
+  min-height:100vh;
+}
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(6,29,38,.94);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(199,164,106,.28);
+  min-height:78px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 18px;
+  box-shadow:0 14px 38px rgba(6,29,38,.18);
+}
+.brand{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:12px;
+  text-align:center;
+  line-height:1.1;
+}
+.brand h1{
+  margin:0;
+  font-family:'Manrope',sans-serif;
+  color:#fff;
+  letter-spacing:.32em;
+  font-size:22px;
+  font-weight:800;
+}
+.brand h1 .brand-y{color:var(--dourado)}
+.brand p{
+  margin:6px 0 0;
+  color:var(--salvia);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.emergys-mark{
+  width:46px;
+  height:46px;
+  border-radius:15px;
+  background:linear-gradient(145deg,#0F3443,#061D26);
+  border:1px solid rgba(199,164,106,.28);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 16px 32px rgba(0,0,0,.22);
+  overflow:visible;
+}
+.emergys-mark svg{width:36px;height:36px;overflow:visible}
+.container{
+  max-width:980px;
+  margin:auto;
+  padding:26px 16px 70px;
+}
+.hero{
+  background:
+    linear-gradient(135deg,rgba(15,52,67,.98),rgba(6,29,38,.98));
+  border:1px solid rgba(199,164,106,.34);
+  border-radius:30px;
+  padding:34px 28px;
+  color:#fff;
+  box-shadow:var(--sombra);
+  margin:18px 0 20px;
+  position:relative;
+  overflow:hidden;
+}
+.hero:after{
+  content:"";
+  position:absolute;
+  width:260px;
+  height:260px;
+  border-radius:50%;
+  right:-90px;
+  top:-90px;
+  border:1px solid rgba(199,164,106,.18);
+}
+.hero h2{
+  margin:0 0 10px;
+  font-family:'Manrope',sans-serif;
+  font-size:clamp(30px,4vw,48px);
+  letter-spacing:-.04em;
+  line-height:1.03;
+}
+.hero p{
+  max-width:760px;
+  margin:0;
+  color:rgba(255,255,255,.78);
+  line-height:1.55;
+  font-size:15px;
+}
+.meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-top:18px;
+}
+.badge{
+  display:inline-block;
+  background:rgba(199,164,106,.16);
+  color:#F1D59A;
+  border:1px solid rgba(199,164,106,.28);
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+}
+.card{
+  background:#fff;
+  border-radius:24px;
+  padding:22px;
+  margin:16px 0;
+  border:1px solid rgba(199,164,106,.32);
+  box-shadow:0 18px 46px rgba(6,29,38,.10);
+}
+.card h3{
+  margin:0 0 14px;
+  font-family:'Manrope',sans-serif;
+  color:var(--verde);
+  font-size:26px;
+  letter-spacing:-.03em;
+}
+.card h4{
+  color:var(--verde);
+  margin:18px 0 8px;
+  font-family:'Manrope',sans-serif;
+}
+.card p,.card li{
+  font-size:14px;
+  line-height:1.65;
+}
+.card ul{padding-left:20px;margin:8px 0}
+.note{
+  background:linear-gradient(145deg,#fff,var(--dour-bg));
+  border:1px solid rgba(199,164,106,.45);
+  color:#6B5730;
+  border-radius:18px;
+  padding:14px;
+  margin:12px 0;
+  line-height:1.45;
+  font-size:13px;
+}
+.alert{
+  background:var(--vermelho-bg);
+  color:var(--vermelho);
+  border:1px solid rgba(169,68,66,.25);
+  border-radius:18px;
+  padding:14px;
+  margin:12px 0;
+  line-height:1.45;
+  font-size:13px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.legal-box{
+  background:linear-gradient(180deg,#fff,var(--off));
+  border:1px solid rgba(194,164,109,.42);
+  border-radius:20px;
+  padding:16px;
+}
+.legal-box h4{margin-top:0}
+.toc{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+}
+.toc a{
+  display:block;
+  text-decoration:none;
+  color:var(--verde);
+  background:#fff;
+  border:1px solid rgba(199,164,106,.35);
+  border-radius:16px;
+  padding:12px;
+  font-weight:800;
+  font-size:13px;
+  box-shadow:0 8px 18px rgba(6,29,38,.06);
+}
+.toc a:hover{background:var(--verde-bg)}
+.footer{
+  text-align:center;
+  color:var(--cinza);
+  font-size:11px;
+  margin-top:30px;
+  line-height:1.5;
+  border-top:1px solid rgba(199,164,106,.22);
+  padding-top:18px;
+}
+@media(max-width:760px){
+  .grid,.toc{grid-template-columns:1fr}
+  .brand{gap:8px}
+  .emergys-mark{width:40px;height:40px;border-radius:13px}
+  .emergys-mark svg{width:31px;height:31px}
+  .brand h1{font-size:18px;letter-spacing:.24em}
+  .brand p{font-size:9px}
+  .hero{padding:28px 22px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <div class="brand">
+    <div aria-hidden="true" class="emergys-mark">
+      <svg fill="none" viewBox="0 0 140 140">
+        <path d="M25 98C51 88 74 67 100 30" stroke="#C7A46A" stroke-linecap="round" stroke-width="9"></path>
+        <path d="M30 111C58 101 84 78 113 44" stroke="#8AAE92" stroke-linecap="round" stroke-width="7"></path>
+        <path d="M42 124C70 112 96 94 124 64" stroke="#C7A46A" stroke-linecap="round" stroke-width="5"></path>
+        <path d="M100 30L124 34L113 11" stroke="#C7A46A" stroke-linecap="round" stroke-linejoin="round" stroke-width="8"></path>
+      </svg>
+    </div>
+    <div>
+      <h1>EMERG<span class="brand-y">YS</span></h1>
+      <p>Inteligência para decisões críticas</p>
+    </div>
+  </div>
+</header>
+
+<main class="container">
+
+<section class="hero">
+  <h2>Termos, Privacidade e Reembolso</h2>
+  <p>
+    Condições gerais de uso da plataforma Emergys, política de privacidade e regras de assinatura, cancelamento e reembolso.
+  </p>
+  <div class="meta">
+    <span class="badge">Versão 1.0</span>
+    <span class="badge">Atualizado em 17/05/2026</span>
+    <span class="badge">Uso profissional</span>
+  </div>
+</section>
+
+<section class="card">
+  <h3>Índice</h3>
+  <div class="toc">
+    <a href="#termos">Termos de uso</a>
+    <a href="#responsabilidade">Responsabilidade médica</a>
+    <a href="#assinatura">Assinatura e acesso</a>
+    <a href="#reembolso">Cancelamento e reembolso</a>
+    <a href="#privacidade">Privacidade e LGPD</a>
+    <a href="#contato">Contato</a>
+  </div>
+</section>
+
+<section class="card" id="termos">
+  <h3>1. Termos de uso</h3>
+  <p>
+    A Emergys é uma plataforma digital de apoio à decisão clínica, composta por calculadoras médicas, referências rápidas, conteúdos técnicos e ferramentas de organização de raciocínio para profissionais da saúde.
+  </p>
+  <p>
+    Ao acessar ou utilizar a plataforma, o usuário declara ter lido, compreendido e aceitado estes Termos, bem como as políticas de privacidade, reembolso e responsabilidade médica.
+  </p>
+
+  <div class="note">
+    <strong>Uso restrito:</strong> a Emergys é destinada a profissionais habilitados da área da saúde. O conteúdo não é direcionado a pacientes, responsáveis ou público leigo como orientação diagnóstica, terapêutica ou prescritiva.
+  </div>
+
+  <h4>1.1. Condições de acesso</h4>
+  <ul>
+    <li>O acesso poderá depender de cadastro, login, assinatura ativa e confirmação de pagamento.</li>
+    <li>O usuário é responsável por manter a confidencialidade de suas credenciais.</li>
+    <li>É proibido compartilhar login, revender acesso, copiar, redistribuir ou explorar comercialmente o conteúdo sem autorização.</li>
+    <li>A Emergys pode suspender ou encerrar o acesso em caso de uso indevido, fraude, tentativa de burlar o sistema ou violação destes Termos.</li>
+  </ul>
+
+  <h4>1.2. Natureza do conteúdo</h4>
+  <ul>
+    <li>As ferramentas têm caráter auxiliar, educacional e operacional.</li>
+    <li>As doses, cálculos, classificações e alertas devem ser conferidos com bula, protocolo institucional, diretrizes atualizadas e julgamento clínico.</li>
+    <li>A plataforma pode conter módulos em fase beta, sujeitos a ajustes, revisão e atualização.</li>
+  </ul>
+</section>
+
+<section class="card" id="responsabilidade">
+  <h3>2. Responsabilidade médica e limitações</h3>
+
+  <div class="alert">
+    <strong>Aviso essencial:</strong> a Emergys não substitui avaliação médica presencial, anamnese, exame físico, raciocínio clínico, prescrição individualizada, protocolos institucionais, discussão com especialistas ou conferência em fontes oficiais.
+  </div>
+
+  <p>
+    O usuário reconhece que qualquer decisão clínica tomada com apoio da plataforma permanece sob sua responsabilidade profissional. A Emergys não realiza diagnóstico, não prescreve, não acompanha pacientes e não garante desfecho clínico.
+  </p>
+
+  <h4>2.1. Dupla checagem obrigatória</h4>
+  <ul>
+    <li>Medicamentos de emergência.</li>
+    <li>Sedativos, opioides e bloqueadores neuromusculares.</li>
+    <li>Drogas vasoativas.</li>
+    <li>Eletrólitos concentrados.</li>
+    <li>Anticoagulantes e trombolíticos.</li>
+    <li>Prescrições pediátricas, neonatais, geriátricas ou em pacientes críticos.</li>
+  </ul>
+
+  <h4>2.2. Situações que exigem cautela ampliada</h4>
+  <ul>
+    <li>Alergias, gestação, lactação, idade extrema, baixo peso ou obesidade.</li>
+    <li>Insuficiência renal, hepática, cardíaca ou respiratória.</li>
+    <li>Choque, sepse, hipoxemia, distúrbios hidroeletrolíticos e acidobásicos.</li>
+    <li>Uso concomitante de medicamentos com interação relevante.</li>
+    <li>Protocolos locais divergentes ou indisponibilidade de determinadas apresentações.</li>
+  </ul>
+</section>
+
+<section class="card" id="assinatura">
+  <h3>3. Assinatura, planos e acesso pago</h3>
+  <p>
+    A Emergys poderá funcionar por meio de planos de assinatura mensal, semestral, anual ou outros modelos comerciais divulgados na página de planos. O acesso é liberado após confirmação de pagamento e validação do cadastro.
+  </p>
+
+  <div class="grid">
+    <div class="legal-box">
+      <h4>3.1. Pagamento</h4>
+      <ul>
+        <li>Os pagamentos poderão ser processados por plataforma externa, como Stripe ou outro intermediador.</li>
+        <li>Dados de cartão e informações financeiras sensíveis são tratados diretamente pelo processador de pagamento, conforme suas próprias políticas.</li>
+        <li>A Emergys poderá receber identificadores de transação, status de pagamento e dados necessários para liberar ou bloquear o acesso.</li>
+      </ul>
+    </div>
+
+    <div class="legal-box">
+      <h4>3.2. Renovação</h4>
+      <ul>
+        <li>Planos recorrentes podem ser renovados automaticamente conforme a modalidade contratada.</li>
+        <li>O usuário poderá solicitar cancelamento conforme os canais disponíveis.</li>
+        <li>A falta de pagamento, contestação, chargeback ou falha na renovação poderá suspender o acesso.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h4>3.3. Alterações de planos e funcionalidades</h4>
+  <p>
+    A Emergys poderá atualizar funcionalidades, corrigir módulos, alterar organização visual, incluir ou remover ferramentas em fase beta e revisar preços de planos futuros. Mudanças relevantes serão comunicadas quando necessário.
+  </p>
+</section>
+
+<section class="card" id="reembolso">
+  <h3>4. Política de cancelamento e reembolso</h3>
+
+  <div class="note">
+    <strong>Garantia Emergys:</strong> o usuário poderá solicitar cancelamento com reembolso integral em até 7 dias corridos após a assinatura inicial, desde que o pedido seja realizado dentro do prazo.
+  </div>
+
+  <p>
+    O prazo de 7 dias segue a lógica do direito de arrependimento aplicável a contratações fora do estabelecimento comercial, previsto no Código de Defesa do Consumidor. O art. 49 do CDC prevê que o consumidor pode desistir do contrato em até 7 dias contados da assinatura ou recebimento do produto/serviço quando a contratação ocorrer fora do estabelecimento comercial.
+  </p>
+
+  <h4>4.1. Como solicitar</h4>
+  <ul>
+    <li>Enviar solicitação pelo e-mail de suporte informado nesta página.</li>
+    <li>Informar nome, e-mail de cadastro, data da assinatura e comprovante, se necessário.</li>
+    <li>Após validação, o reembolso será processado pelo meio de pagamento utilizado.</li>
+  </ul>
+
+  <h4>4.2. Após 7 dias</h4>
+  <ul>
+    <li>Após o prazo de 7 dias, o cancelamento interrompe renovações futuras, mas não gera automaticamente reembolso proporcional do período já contratado.</li>
+    <li>Pedidos excepcionais poderão ser analisados individualmente.</li>
+    <li>Chargebacks indevidos, fraude ou violação dos Termos podem levar ao bloqueio da conta.</li>
+  </ul>
+
+  <h4>4.3. Falhas técnicas</h4>
+  <p>
+    Em caso de instabilidade relevante que impeça o acesso por falha atribuível à plataforma, o usuário poderá acionar o suporte para análise. A Emergys poderá corrigir o problema, prorrogar acesso ou adotar outra medida razoável conforme o caso.
+  </p>
+</section>
+
+<section class="card" id="privacidade">
+  <h3>5. Política de privacidade e LGPD</h3>
+  <p>
+    A Emergys trata dados pessoais para viabilizar cadastro, login, controle de assinatura, suporte, segurança, prevenção a fraude, comunicação com usuários e melhoria da plataforma.
+  </p>
+
+  <div class="note">
+    A Lei Geral de Proteção de Dados Pessoais dispõe sobre o tratamento de dados pessoais em meios digitais por pessoa natural ou jurídica. A LGPD assegura titularidade dos dados pessoais e direitos fundamentais relacionados à liberdade, privacidade e desenvolvimento da personalidade.
+  </div>
+
+  <h4>5.1. Dados que podem ser tratados</h4>
+  <ul>
+    <li>Nome, e-mail, telefone e dados de cadastro.</li>
+    <li>Informações de login, assinatura, plano, validade e status de pagamento.</li>
+    <li>Dados técnicos, como IP, dispositivo, navegador, logs de acesso e eventos de segurança.</li>
+    <li>Registros de suporte e comunicações enviadas pelo usuário.</li>
+    <li>Dados de uso da plataforma, como páginas acessadas, recursos utilizados e métricas agregadas.</li>
+  </ul>
+
+  <h4>5.2. Dados de saúde</h4>
+  <p>
+    A Emergys não deve ser utilizada como prontuário, ficha de paciente ou sistema de armazenamento de dados clínicos identificáveis. O usuário não deve inserir nome, CPF, endereço, telefone, imagens ou qualquer dado que identifique pacientes em campos livres da plataforma.
+  </p>
+
+  <h4>5.3. Bases e finalidades</h4>
+  <ul>
+    <li>Execução de contrato e prestação do serviço contratado.</li>
+    <li>Cumprimento de obrigação legal ou regulatória, quando aplicável.</li>
+    <li>Legítimo interesse para segurança, prevenção a fraude, melhoria e suporte.</li>
+    <li>Consentimento quando necessário para finalidades específicas.</li>
+  </ul>
+
+  <h4>5.4. Compartilhamento</h4>
+  <p>
+    Dados podem ser compartilhados com provedores necessários para operação da plataforma, como hospedagem, autenticação, banco de dados, analytics, atendimento e processadores de pagamento. Esses terceiros devem tratar os dados conforme suas próprias políticas e obrigações legais.
+  </p>
+
+  <h4>5.5. Direitos do titular</h4>
+  <ul>
+    <li>Confirmar a existência de tratamento.</li>
+    <li>Acessar, corrigir ou atualizar dados.</li>
+    <li>Solicitar anonimização, bloqueio ou eliminação quando aplicável.</li>
+    <li>Solicitar portabilidade, informação sobre compartilhamento e revisão de decisões automatizadas quando cabível.</li>
+    <li>Revogar consentimento quando essa for a base utilizada.</li>
+  </ul>
+
+  <h4>5.6. Segurança e retenção</h4>
+  <p>
+    A Emergys adota medidas razoáveis de segurança técnica e administrativa para proteger os dados. Os dados serão mantidos pelo tempo necessário para cumprir as finalidades informadas, obrigações legais, prevenção a fraude, exercício regular de direitos e auditoria.
+  </p>
+</section>
+
+<section class="card">
+  <h3>6. Propriedade intelectual</h3>
+  <p>
+    Layout, textos, organização, calculadoras, fluxos, marca, identidade visual e código da plataforma pertencem à Emergys ou a seus respectivos titulares/licenciantes.
+  </p>
+  <ul>
+    <li>É proibido copiar, clonar, redistribuir, vender, publicar ou modificar o conteúdo sem autorização.</li>
+    <li>É proibido engenharia reversa, raspagem automatizada, extração massiva de dados ou tentativa de contornar controle de acesso.</li>
+    <li>O uso da plataforma não transfere propriedade intelectual ao usuário.</li>
+  </ul>
+</section>
+
+<section class="card">
+  <h3>7. Disponibilidade e atualizações</h3>
+  <p>
+    A Emergys buscará manter a plataforma disponível, segura e atualizada, mas não garante funcionamento ininterrupto. Poderão ocorrer manutenções, atualizações, indisponibilidades temporárias ou alterações de infraestrutura.
+  </p>
+  <p>
+    Conteúdos médicos podem ser atualizados periodicamente, mas cabe ao usuário conferir fontes oficiais, protocolos locais, bulas e diretrizes vigentes antes da tomada de decisão.
+  </p>
+</section>
+
+<section class="card">
+  <h3>8. Alterações destes Termos</h3>
+  <p>
+    Estes Termos podem ser atualizados a qualquer momento para refletir mudanças legais, operacionais, comerciais ou técnicas. A versão vigente será publicada nesta página, com data de atualização.
+  </p>
+</section>
+
+<section class="card" id="contato">
+  <h3>9. Contato</h3>
+  <p>
+    Para dúvidas, suporte, cancelamento, solicitação de reembolso, privacidade ou exercício de direitos relacionados à LGPD, entre em contato:
+  </p>
+  <div class="legal-box">
+    <h4>Canal de suporte</h4>
+    <p><strong>E-mail:</strong> drfelipediasfigueiredo@gmail.com</p>
+    <p><strong>Assunto sugerido:</strong> Suporte Emergys — Termos, Reembolso ou Privacidade</p>
+  </div>
+</section>
+
+<div class="footer">
+  Emergys · Inteligência para decisões críticas · Termos, privacidade e reembolso · Versão 1.0
+</div>
+
+</main>
+
+
+
+</body></html>
