@@ -1,0 +1,9 @@
+{
+  "name": "emergys-site",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.8",
+    "stripe": "^18.1.1"
+  }
+}
