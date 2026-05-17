@@ -14,37 +14,47 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-async function getRawBody(req) {
+async function getRawBody(readable) {
   const chunks = [];
-  for await (const chunk of req) {
-    chunks.push(chunk);
+
+  for await (const chunk of readable) {
+    chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
   }
+
   return Buffer.concat(chunks);
 }
 
 export default async function handler(req, res) {
+
   if (req.method !== "POST") {
     return res.status(405).send("Method not allowed");
   }
 
-  const sig = req.headers["stripe-signature"];
-  const rawBody = await getRawBody(req);
-
   let event;
 
   try {
+
+    const rawBody = await getRawBody(req);
+
+    const signature = req.headers["stripe-signature"];
+
     event = stripe.webhooks.constructEvent(
       rawBody,
-      sig,
+      signature,
       process.env.STRIPE_WEBHOOK_SECRET
     );
+
   } catch (err) {
-    console.error("Webhook signature error:", err.message);
+
+    console.error("Webhook Error:", err.message);
+
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
   try {
+
     if (event.type === "checkout.session.completed") {
+
       const session = event.data.object;
 
       const email =
@@ -52,17 +62,53 @@ export default async function handler(req, res) {
         session.customer_email;
 
       if (!email) {
-        return res.status(400).json({ error: "E-mail não encontrado na sessão." });
+        return res.status(400).json({
+          error: "Email não encontrado na sessão Stripe",
+        });
       }
 
-      const plan = session.metadata?.plan || "mensal";
-      const durationDays = Number(session.metadata?.duration_days || 30);
+      const customerId = session.customer;
 
-      const expiresAt = new Date();
-      expiresAt.setDate(expiresAt.getDate() + durationDays);
+      const subscriptionId = session.subscription;
 
-      // 1. Salva assinatura
-      const { error: subError } = await supabase
+      let subscription = null;
+
+      if (subscriptionId) {
+        subscription = await stripe.subscriptions.retrieve(subscriptionId);
+      }
+
+      const priceId =
+        subscription?.items?.data?.[0]?.price?.id || null;
+
+      let plan = "mensal";
+
+      if (
+        priceId === "price_SEMESTRAL_ID"
+      ) {
+        plan = "semestral";
+      }
+
+      if (
+        priceId === "price_ANUAL_ID"
+      ) {
+        plan = "anual";
+      }
+
+      let expiresAt = new Date();
+
+      if (plan === "mensal") {
+        expiresAt.setMonth(expiresAt.getMonth() + 1);
+      }
+
+      if (plan === "semestral") {
+        expiresAt.setMonth(expiresAt.getMonth() + 6);
+      }
+
+      if (plan === "anual") {
+        expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+      }
+
+      const { error } = await supabase
         .from("subscriptions")
         .upsert(
           {
@@ -70,35 +116,62 @@ export default async function handler(req, res) {
             plan,
             status: "active",
             expires_at: expiresAt.toISOString(),
-            stripe_customer_id: session.customer,
+            stripe_customer_id: customerId,
+            stripe_subscription_id: subscriptionId,
             stripe_session_id: session.id,
             updated_at: new Date().toISOString(),
           },
-          { onConflict: "email" }
+          {
+            onConflict: "email",
+          }
         );
 
-      if (subError) {
-        console.error("Supabase subscription error:", subError);
-        return res.status(500).json({ error: subError.message });
+      if (error) {
+
+        console.error("Supabase subscription error:", error);
+
+        return res.status(500).json({
+          error: error.message,
+        });
       }
 
-      // 2. Cria convite para o usuário definir senha
-      const { error: inviteError } = await supabase.auth.admin.inviteUserByEmail(
-        email,
-        {
-          redirectTo: "https://www.emergys.com.br/login.html",
-        }
-      );
+      const { error: inviteError } =
+        await supabase.auth.admin.inviteUserByEmail(
+          email,
+          {
+            redirectTo:
+              "https://www.emergys.com.br/login.html",
+          }
+        );
 
-      if (inviteError && !inviteError.message.includes("already registered")) {
-        console.error("Supabase invite error:", inviteError);
-        return res.status(500).json({ error: inviteError.message });
+      if (
+        inviteError &&
+        !inviteError.message.includes("already registered")
+      ) {
+
+        console.error(
+          "Supabase invite error:",
+          inviteError
+        );
+
+        return res.status(500).json({
+          error: inviteError.message,
+        });
       }
+
+      console.log("Usuário liberado:", email);
     }
 
-    return res.status(200).json({ received: true });
+    return res.status(200).json({
+      received: true,
+    });
+
   } catch (err) {
-    console.error("General webhook error:", err);
-    return res.status(500).json({ error: "Internal server error" });
+
+    console.error("Webhook processing error:", err);
+
+    return res.status(500).json({
+      error: err.message,
+    });
   }
 }
