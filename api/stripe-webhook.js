@@ -1,162 +1,69 @@
-import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
+import Stripe from "stripe";
+import { createClient } from "@supabase/supabase-js";
+
+export const config = {
+  api: { bodyParser: false },
+};
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
-async function getRawBody(readable) {
+async function getRawBody(req) {
   const chunks = [];
-
-  for await (const chunk of readable) {
-    chunks.push(typeof chunk === 'string' ? Buffer.from(chunk) : chunk);
-  }
-
+  for await (const chunk of req) chunks.push(chunk);
   return Buffer.concat(chunks);
 }
 
 export default async function handler(req, res) {
+  if (req.method !== "POST") return res.status(405).send("Method not allowed");
 
-  if (req.method !== 'POST') {
-    return res.status(405).send('Method Not Allowed');
-  }
-
+  const sig = req.headers["stripe-signature"];
   const rawBody = await getRawBody(req);
-
-  const signature = req.headers['stripe-signature'];
 
   let event;
 
   try {
-
     event = stripe.webhooks.constructEvent(
       rawBody,
-      signature,
+      sig,
       process.env.STRIPE_WEBHOOK_SECRET
     );
-
   } catch (err) {
-
-    console.error('Webhook signature error:', err.message);
-
+    console.error("Erro assinatura webhook:", err.message);
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  try {
+  if (event.type === "checkout.session.completed") {
+    const session = event.data.object;
 
-    switch (event.type) {
+    const email = session.customer_details?.email || session.customer_email;
+    const plan = session.metadata?.plan || "mensal";
+    const durationDays = Number(session.metadata?.duration_days || 30);
 
-      case 'checkout.session.completed': {
+    const expiresAt = new Date();
+    expiresAt.setDate(expiresAt.getDate() + durationDays);
 
-        const session = event.data.object;
+    const { error } = await supabase.from("subscriptions").upsert(
+      {
+        email,
+        plan,
+        status: "active",
+        expires_at: expiresAt.toISOString(),
+        stripe_customer_id: session.customer,
+        stripe_session_id: session.id,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "email" }
+    );
 
-        const customerEmail = session.customer_details?.email;
-
-        if (customerEmail) {
-
-          await supabase
-            .from('profiles')
-            .update({
-              active: true,
-              subscription_status: 'active',
-            })
-            .eq('email', customerEmail);
-
-          console.log('Usuário ativado:', customerEmail);
-        }
-
-        break;
-      }
-
-      case 'invoice.payment_failed': {
-
-        const invoice = event.data.object;
-
-        const customerEmail = invoice.customer_email;
-
-        if (customerEmail) {
-
-          await supabase
-            .from('profiles')
-            .update({
-              active: false,
-              subscription_status: 'payment_failed',
-            })
-            .eq('email', customerEmail);
-
-          console.log('Pagamento falhou:', customerEmail);
-        }
-
-        break;
-      }
-
-      case 'customer.subscription.deleted': {
-
-        const subscription = event.data.object;
-
-        const customerId = subscription.customer;
-
-        const { data: profiles } = await supabase
-          .from('profiles')
-          .select('*')
-          .eq('stripe_customer_id', customerId);
-
-        if (profiles?.length > 0) {
-
-          await supabase
-            .from('profiles')
-            .update({
-              active: false,
-              subscription_status: 'cancelled',
-            })
-            .eq('stripe_customer_id', customerId);
-
-          console.log('Assinatura cancelada:', customerId);
-        }
-
-        break;
-      }
-
-      case 'charge.refunded': {
-
-        const charge = event.data.object;
-
-        const customerId = charge.customer;
-
-        await supabase
-          .from('profiles')
-          .update({
-            active: false,
-            subscription_status: 'refunded',
-          })
-          .eq('stripe_customer_id', customerId);
-
-        console.log('Reembolso realizado:', customerId);
-
-        break;
-      }
-
-      default:
-        console.log(`Evento ignorado: ${event.type}`);
+    if (error) {
+      console.error("Erro Supabase:", error);
+      return res.status(500).json({ error: error.message });
     }
-
-    return res.status(200).json({
-      received: true,
-    });
-
-  } catch (error) {
-
-    console.error(error);
-
-    return res.status(500).send('Internal Server Error');
   }
+
+  return res.status(200).json({ received: true });
 }
