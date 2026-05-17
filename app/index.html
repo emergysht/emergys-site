@@ -768,10 +768,165 @@ input:focus,select:focus,textarea:focus{
 }
 
 
+/* ===== Módulos adicionados: Sedação/SRI, Ventilação Mecânica e Introdução Alimentar ===== */
+.sed-grid-top{
+  display:grid;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:12px;
+}
+.sed-check-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin-top:14px;
+}
+.sed-check{
+  background:#fff;
+  border:1px solid rgba(194,164,109,.35);
+  border-radius:14px;
+  padding:10px;
+  display:flex;
+  gap:8px;
+  align-items:flex-start;
+  font-size:12px;
+  line-height:1.35;
+}
+.sed-check input{width:auto;margin-top:2px}
+.sed-tabs{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:10px;
+  margin:14px 0;
+}
+.sed-tab{
+  border:1px solid rgba(194,164,109,.55);
+  background:#fff;
+  color:var(--verde);
+  border-radius:14px;
+  padding:12px;
+  font-weight:800;
+  cursor:pointer;
+}
+.sed-tab.active{
+  background:linear-gradient(135deg,var(--verde),var(--azul2));
+  color:#fff;
+  border-color:var(--verde);
+}
+.sed-content{display:none}
+.sed-content.active{display:block}
+.sed-card-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.sed-drug{
+  background:linear-gradient(180deg,#fff,var(--off));
+  border:1px solid rgba(194,164,109,.42);
+  border-radius:20px;
+  padding:16px;
+  box-shadow:0 10px 28px rgba(6,29,38,.08);
+}
+.sed-drug h4{
+  margin:0 0 4px;
+  color:var(--verde);
+  font-family:'Manrope',sans-serif;
+  font-size:20px;
+}
+.sed-dose{
+  margin:12px 0;
+  padding:14px;
+  border-radius:16px;
+  background:linear-gradient(145deg,rgba(138,174,146,.14),rgba(199,164,106,.10));
+  border:1px solid rgba(199,164,106,.35);
+}
+.sed-dose strong{
+  color:var(--verde);
+  font-size:22px;
+  font-family:'Manrope',sans-serif;
+}
+.sed-info{
+  background:#fff;
+  border:1px solid rgba(194,164,109,.25);
+  border-radius:14px;
+  padding:10px;
+  margin-top:8px;
+  font-size:13px;
+  line-height:1.45;
+}
+.sed-info strong{color:var(--verde)}
+.alert-green{
+  background:#EDF8F1;
+  color:#245F3E;
+  border:1px solid rgba(36,95,62,.22);
+  border-radius:18px;
+  padding:14px;
+  margin:12px 0;
+  line-height:1.45;
+  font-size:13px;
+}
+.food-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+.food-card{
+  background:linear-gradient(180deg,#fff,var(--off));
+  border:1px solid rgba(194,164,109,.42);
+  border-radius:20px;
+  padding:16px;
+  box-shadow:0 10px 28px rgba(6,29,38,.08);
+}
+.food-card h4{
+  margin:0 0 10px;
+  color:var(--verde);
+  font-family:'Manrope',sans-serif;
+}
+.food-card.full{grid-column:1/-1}
+.food-card p{font-size:13px;line-height:1.55;margin:0 0 10px}
+.food-card ul{margin:0;padding-left:18px;line-height:1.65;font-size:13px}
+.vm-card-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+@media(max-width:760px){
+  .sed-grid-top,.sed-check-grid,.sed-card-grid,.food-grid,.vm-card-grid{grid-template-columns:1fr}
+  .sed-tabs{grid-template-columns:1fr 1fr}
+}
+
+
+/* ===== Subabas Puericultura ===== */
+.puer-tabs{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+  margin:14px 0 18px;
+}
+.puer-tab{
+  border:1px solid rgba(194,164,109,.55);
+  background:#fff;
+  color:var(--verde);
+  border-radius:14px;
+  padding:13px;
+  font-weight:800;
+  cursor:pointer;
+}
+.puer-tab.active{
+  background:linear-gradient(135deg,var(--verde),var(--azul2));
+  color:#fff;
+  border-color:var(--verde);
+}
+.puer-subsection{display:none}
+.puer-subsection.active{display:block}
+@media(max-width:760px){.puer-tabs{grid-template-columns:1fr}}
+
+
 .supabase-logout{position:fixed;right:14px;bottom:14px;z-index:30;border:1px solid rgba(199,164,106,.55);background:rgba(6,29,38,.92);color:#fff;border-radius:14px;padding:11px 14px;font-weight:800;cursor:pointer;box-shadow:0 12px 28px rgba(0,0,0,.22)}
 .supabase-logout:hover{background:#0F3443}
 
 </style>
+
+
 
 
 <!-- Proteção de acesso Emergys via Supabase -->
@@ -854,6 +1009,7 @@ window.sairEmergys = async function(){
 
 </head>
 <body>
+<button class="supabase-logout" onclick="sairEmergys()">Sair</button>
 
 <div class="modal" id="termsModal" style="display: flex;">
 <div class="modal-box">
@@ -908,6 +1064,7 @@ window.sairEmergys = async function(){
 <button class="nav-item" onclick="goSection('hidratacao')">Holliday-Segar / Solução <span>›</span></button>
 <button class="nav-item" onclick="goSection('tig')">TIG / Soluções glicosadas <span>›</span></button>
 <button class="nav-item" onclick="goSection('emergencia')">Emergência / Drogas críticas <span>›</span></button>
+<button class="nav-item" onclick="goSection('sedacaoSRI')">Sedação / SRI <span>›</span></button>
 <button class="nav-item" onclick="goSection('vasoativas')">Drogas vasoativas / BIC universal <span>›</span></button>
 <button class="nav-item" onclick="goSection('iam')">IAM com supra <span>›</span></button>
 <button class="nav-item" onclick="goSection('avc')">AVC isquêmico <span>›</span></button>
@@ -1571,6 +1728,32 @@ window.sairEmergys = async function(){
 </div>
 <button class="btn primary" onclick="calcularSodio()">Calcular sódio</button>
 <div id="resultadoSodio"></div>
+
+<div class="alg-card" style="margin-top:16px">
+<h4>Sódio corrigido pela glicemia</h4>
+<div class="note">
+  A hiperglicemia reduz o sódio medido por deslocamento osmótico de água para o extracelular. Use esta ferramenta para estimar o sódio corrigido e evitar interpretação inadequada da natremia.
+</div>
+<div class="grid-3">
+  <div>
+    <label>Sódio medido, mEq/L</label>
+    <input id="naCorrSodio" placeholder="Ex.: 128" step="0.1" type="number">
+  </div>
+  <div>
+    <label>Glicemia, mg/dL</label>
+    <input id="naCorrGlicose" placeholder="Ex.: 450" step="1" type="number">
+  </div>
+  <div>
+    <label>Fator de correção</label>
+    <select id="naCorrFator">
+      <option value="1.6">+1,6 mEq/L para cada 100 mg/dL acima de 100</option>
+      <option value="2.4">+2,4 mEq/L para cada 100 mg/dL acima de 100</option>
+    </select>
+  </div>
+</div>
+<button class="btn primary" onclick="calcularSodioCorrigido()">Calcular sódio corrigido</button>
+<div id="resultadoSodioCorrigido"></div>
+</div>
 </div>
 </section>
 <section class="section" id="calcGasometria">
@@ -1733,6 +1916,7 @@ window.sairEmergys = async function(){
 <option value="glasgow_ped">Glasgow pediátrico</option>
 <option value="qsofa">qSOFA</option>
 <option value="curb65">CURB-65</option>
+<option value="pram">PRAM — Exacerbação de asma pediátrica</option>
 </select>
 </div>
 </div>
@@ -1748,171 +1932,547 @@ window.sairEmergys = async function(){
 </section>
 
 <section class="section" id="puericultura">
-  <div class="card">
-    <h3>Roteiro de puericultura</h3>
 
-    <div class="alert">
+<div class="card">
+<h3>Roteiro de puericultura</h3>
+<div class="alert">
       Material técnico de apoio clínico para acompanhamento ambulatorial pediátrico. As condutas devem ser individualizadas conforme avaliação médica, idade, histórico, exame físico, calendário vacinal vigente e protocolos locais.
     </div>
+<div class="puer-tabs">
+<button class="puer-tab active" onclick="puerShowTab('puerSubGuia', this)">Guia de puericultura</button>
+<button class="puer-tab" onclick="puerShowTab('puerSubAlimentar', this)">Guia de introdução alimentar</button>
+</div>
+<div class="puer-subsection active" id="puerSubGuia">
+<div class="alg-card">
+<h4>Itens obrigatórios em toda consulta</h4>
+<ul class="list">
+<li>Peso e velocidade de crescimento.</li>
+<li>Comprimento, quando menor de 2 anos, ou estatura.</li>
+<li>IMC rotineiramente a partir dos 2 anos.</li>
+<li>Perímetro cefálico até 2 anos.</li>
+<li>Frequência cardíaca e frequência respiratória.</li>
+<li>Pressão arterial conforme idade e fatores de risco.</li>
+<li>Vacinas e conferência do calendário vacinal.</li>
+<li>Desenvolvimento neuropsicomotor, linguagem e interação social.</li>
+<li>Alimentação, sono, eliminações, segurança e tempo de tela.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Recém-nascido</h4>
+<ul class="list">
+<li>Frequência cardíaca: 100–160 bpm.</li>
+<li>Frequência respiratória: 30–60 irpm.</li>
+<li>Pressão arterial sistólica: 60–80 mmHg.</li>
+<li>Avaliar fontanelas, quadris, pulsos femorais e reflexos primitivos.</li>
+<li>Vitamina D 400 UI/dia desde a primeira semana.</li>
+<li>BCG e Hepatite B.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Reflexos primitivos</h4>
+<ul class="list">
+<li>Moro: desaparece entre 4–6 meses.</li>
+<li>Busca: desaparece entre 3–4 meses.</li>
+<li>Sucção: integra entre 3–4 meses.</li>
+<li>Preensão palmar: desaparece entre 4–6 meses.</li>
+<li>Preensão plantar: desaparece entre 9–12 meses.</li>
+<li>Marcha automática: desaparece entre 1–2 meses.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Marcos importantes fora das consultas clássicas</h4>
+<ul class="list">
+<li>30 dias: prematuros iniciar ferro 2–4 mg/kg/dia.</li>
+<li>3 meses: recém-nascido termo iniciar ferro 1 mg/kg/dia.</li>
+<li>5–6 meses: preparação para introdução alimentar.</li>
+<li>9–12 meses: primeira avaliação oftalmológica ideal.</li>
+<li>2 anos: iniciar IMC rotineiramente.</li>
+<li>3 anos: iniciar aferição anual da pressão arterial.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Desenvolvimento infantil — marcos rápidos</h4>
+<ul class="list">
+<li>2 meses: sorriso social e vocalização.</li>
+<li>4 meses: inicia rolar.</li>
+<li>6 meses: senta com apoio.</li>
+<li>9 meses: pinça e responde ao nome.</li>
+<li>12 meses: anda com apoio e primeiras palavras.</li>
+<li>15–18 meses: brincadeira simbólica.</li>
+<li>2 anos: frases simples e corre.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Puberdade feminina</h4>
+<ul class="list">
+<li>Telarca fisiológica: 8–13 anos.</li>
+<li>M2: 8–11 anos.</li>
+<li>M3: 10–13 anos.</li>
+<li>M4: 11–14 anos.</li>
+<li>M5: 13–15 anos.</li>
+<li>Menarca média: 12–13 anos.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Puberdade masculina</h4>
+<ul class="list">
+<li>Aumento testicular fisiológico: 9–14 anos.</li>
+<li>Volume testicular puberal: &gt;4 mL.</li>
+<li>G2: 9–11 anos.</li>
+<li>G3: 11–13 anos.</li>
+<li>G4: 13–15 anos.</li>
+<li>G5: 15–17 anos.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Pelos pubianos</h4>
+<ul class="list">
+<li>P2: 8–11 anos em meninas; 10–12 anos em meninos.</li>
+<li>P3: 11–13 anos.</li>
+<li>P4: 13–15 anos.</li>
+<li>P5: 15–17 anos.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Desenvolvimento peniano</h4>
+<ul class="list">
+<li>Recém-nascido termo: média aproximada de 3,5 cm.</li>
+<li>Faixa neonatal normal: 2,5–4,5 cm.</li>
+<li>Suspeitar de micropênis se &lt;2 cm.</li>
+<li>Pré-puberal: 5–7 cm.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Avaliação oftalmológica</h4>
+<ul class="list">
+<li>Teste do olhinho preferencialmente na maternidade.</li>
+<li>Primeira avaliação completa ideal entre 6 meses e 1 ano.</li>
+<li>Acuidade visual formal entre 4–5 anos.</li>
+<li>Encaminhar precocemente em leucocoria, estrabismo ou prematuridade.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Vacinas importantes</h4>
+<ul class="list">
+<li>Ao nascer: BCG e Hepatite B.</li>
+<li>2 meses: Pentavalente, VIP, Pneumocócica, Rotavírus e Meningocócica.</li>
+<li>4 meses: reforços.</li>
+<li>6 meses: Pentavalente, VIP e Influenza.</li>
+<li>12 meses: Tríplice viral e Hepatite A.</li>
+<li>Adolescência: HPV, ACWY e dT/dTpa.</li>
+</ul>
+</div><div class="alg-card">
+<h4>Tabela prática de pressão arterial pediátrica</h4>
+<div class="table-wrap">
+<table class="med-table">
+<thead>
+<tr>
+<th>Idade</th>
+<th>Hipotensão</th>
+<th>Normotensão</th>
+<th>PA elevada</th>
+<th>HAS estágio 1</th>
+<th>HAS estágio 2</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>RN</td><td>&lt;60</td><td>60–80</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>1–12 meses</td><td>&lt;70</td><td>70–100</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td>1–3 anos</td><td>&lt;72</td><td>80–100/50–70</td><td>&gt;100/70</td><td>&gt;105/70</td><td>&gt;115/80</td></tr>
+<tr><td>4–5 anos</td><td>&lt;74</td><td>85–105/55–75</td><td>&gt;105/75</td><td>&gt;110/75</td><td>&gt;120/80</td></tr>
+<tr><td>6–9 anos</td><td>&lt;76</td><td>90–110/60–75</td><td>&gt;110/75</td><td>&gt;115/75</td><td>&gt;125/85</td></tr>
+<tr><td>10–12 anos</td><td>&lt;80</td><td>95–120/60–80</td><td>&gt;120/&lt;80</td><td>130/80–139/89</td><td>≥140/90</td></tr>
+<tr><td>≥13 anos</td><td>&lt;90</td><td>&lt;120/&lt;80</td><td>120–129/&lt;80</td><td>130/80–139/89</td><td>≥140/90</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="puer-subsection" id="puerSubAlimentar">
+<div class="alg-card">
+<h4>Introdução alimentar — mega guia premium</h4>
+<div class="alert-green">
+        A introdução alimentar deve iniciar aos 6 meses completos, mantendo aleitamento materno até 2 anos ou mais quando possível. A comida entra como complemento, não como substituição imediata do leite.
+      </div>
+<div class="food-grid">
+<div class="food-card full">
+<h4>Princípios centrais</h4>
+<p>A introdução alimentar participa do desenvolvimento neurológico, maturação imunológica, formação da microbiota intestinal, aprendizagem oral e motora, prevenção de seletividade alimentar, construção de hábitos saudáveis, prevenção de anemia e relação emocional com a comida.</p>
+<ul>
+<li>Iniciar aos 6 meses completos.</li>
+<li>Manter aleitamento materno até 2 anos ou mais, quando possível.</li>
+<li>Oferecer comida amassada com garfo, espessa e com pequenos grumos.</li>
+<li>Evitar liquidificador, peneira e papas excessivamente homogêneas.</li>
+<li>Introduzir um alimento novo por dia, mantendo os já aceitos.</li>
+</ul>
+</div>
+<div class="food-card">
+<h4>Critérios de prontidão</h4>
+<ul>
+<li>Sustenta bem a cabeça.</li>
+<li>Senta com apoio.</li>
+<li>Leva objetos à boca.</li>
+<li>Demonstra interesse pela comida.</li>
+<li>Reduz reflexo de protrusão da língua.</li>
+</ul>
+</div>
+<div class="food-card">
+<h4>Estrutura ideal da refeição</h4>
+<ul>
+<li>Carboidrato: arroz, batata, mandioca, aveia.</li>
+<li>Leguminosa: feijão, lentilha, ervilha.</li>
+<li>Proteína: carne, frango, ovo, peixe.</li>
+<li>Legumes e verduras: abóbora, brócolis, couve.</li>
+<li>Gordura saudável: azeite e abacate.</li>
+</ul>
+</div>
+<div class="food-card full">
+<h4>Leite — SBP, Ministério da Saúde e OMS</h4>
+<p>Há convergência em aleitamento materno exclusivo até 6 meses, introdução alimentar aos 6 meses e manutenção do aleitamento até 2 anos ou mais quando possível.</p>
+<p>Na prática pediátrica brasileira, evita-se leite de vaca como bebida principal antes de 12 meses, priorizando leite materno ou fórmula infantil adequada quando necessário. A OMS 2023 admite leite animal entre 6 e 11 meses em contextos específicos, porém como recomendação condicional, com baixa certeza de evidência e possível maior risco de anemia e deficiência de ferro.</p>
+</div>
+<div class="food-card">
+<h4>Maiores alergênicos</h4>
+<ul>
+<li>Ovo.</li>
+<li>Leite e derivados.</li>
+<li>Peixe.</li>
+<li>Camarão, siri, caranguejo, lagosta, lula e polvo.</li>
+<li>Amendoim.</li>
+<li>Castanhas, nozes, amêndoas, avelã, pistache e macadâmia.</li>
+<li>Trigo, aveia, cevada, centeio, pão e macarrão.</li>
+<li>Soja, tofu, edamame, gergelim, chia e linhaça.</li>
+</ul>
+</div>
+<div class="food-card">
+<h4>Como oferecer alergênicos</h4>
+<ul>
+<li>A partir de 6 meses, sem atraso desnecessário.</li>
+<li>Um alergênico novo por vez.</li>
+<li>Pequena quantidade inicial.</li>
+<li>Durante o dia e com a criança saudável.</li>
+<li>Manter exposição contínua após boa tolerância.</li>
+<li>Nunca oferecer castanhas, amendoim ou sementes inteiras.</li>
+</ul>
+</div>
+<div class="food-card full">
+<h4>Frutas — primeiros sabores</h4>
+<ul>
+<li>Abacate, abacaxi, acerola, ameixa, amora, banana, caju, caqui, coco, cupuaçu.</li>
+<li>Figo, framboesa, goiaba, graviola, jabuticaba, jaca, kiwi, kiwi dourado.</li>
+<li>Laranja, limão, maçã, mamão, manga, maracujá, melancia, melão.</li>
+<li>Mirtilo, morango, nectarina, pera, pêssego, physalis, pitanga, pitaya.</li>
+<li>Romã, seriguela, tangerina, tamarindo e uva em corte seguro.</li>
+</ul>
+</div>
+<div class="food-card">
+<h4>Proteínas</h4>
+<ul>
+<li>Carne bovina desfiada, patinho moído, músculo desfiado.</li>
+<li>Frango desfiado, frango em tiras, peru desfiado.</li>
+<li>Carne suína magra bem cozida.</li>
+<li>Ovo cozido, ovo mexido e omelete.</li>
+<li>Peixe, sardinha, tilápia e salmão.</li>
+<li>Fígado ocasionalmente.</li>
+<li>Almôndega caseira, almôndega de peixe e hambúrguer caseiro.</li>
+</ul>
+</div>
+<div class="food-card">
+<h4>Carboidratos</h4>
+<ul>
+<li>Arroz branco, integral, negro e vermelho.</li>
+<li>Aveia, quinoa, amaranto e painço.</li>
+<li>Batata, batata-doce, batata-baroa, batata-roxa.</li>
+<li>Cará, inhame, mandioca e mandioquinha.</li>
+<li>Polenta, tapioca, cuscuz e milho-verde.</li>
+<li>Pão, pão integral, macarrão, macarrão integral e nhoque caseiro.</li>
+</ul>
+</div>
+<div class="food-card">
+<h4>Leguminosas</h4>
+<ul>
+<li>Feijão carioca, preto, branco, vermelho e fradinho.</li>
+<li>Feijão-manteiga e feijão-azuki.</li>
+<li>Lentilha, lentilha vermelha e lentilha francesa.</li>
+<li>Ervilha, ervilha torta, grão-de-bico, soja e fava.</li>
+</ul>
+</div>
+<div class="food-card">
+<h4>Legumes e verduras</h4>
+<ul>
+<li>Abobrinha, abóbora, abóbora cabotiá, acelga, agrião, alface.</li>
+<li>Alho-poró, aspargos, berinjela, beterraba, bok choy, brócolis.</li>
+<li>Cenoura, cenoura roxa, chicória, chuchu, cogumelos bem cozidos.</li>
+<li>Couve, couve chinesa, couve-flor, couve-manteiga e espinafre.</li>
+<li>Ervilha fresca, funcho, jiló, nabo, nirá, ora-pro-nóbis.</li>
+<li>Palmito pupunha, pepino, quiabo, rabanete, repolho branco e roxo.</li>
+<li>Rúcula, salsão, taioba, tomate e tomate-cereja cortado.</li>
+</ul>
+</div>
+<div class="food-card full">
+<h4>Temperos naturais e ervas aromáticas</h4>
+<p>A introdução precoce de ervas naturais ajuda a ampliar repertório alimentar, reduzir dependência de sal e melhorar aceitação alimentar.</p>
+<ul>
+<li>Açafrão, alecrim, alho, baunilha natural, canela, cebolinha, coentro.</li>
+<li>Cúrcuma, curry suave, dill, erva-doce, gengibre suave e hortelã.</li>
+<li>Louro, manjericão, manjerona, orégano, páprica doce.</li>
+<li>Páprica suave defumada, salsa e tomilho.</li>
+</ul>
+</div>
+<div class="food-card">
+<h4>Evitar antes de 1 ano</h4>
+<ul>
+<li>Mel.</li>
+<li>Castanhas inteiras.</li>
+<li>Amendoim inteiro.</li>
+<li>Pipoca.</li>
+<li>Uvas inteiras.</li>
+<li>Alimentos redondos e duros.</li>
+</ul>
+</div>
+<div class="food-card">
+<h4>Evitar até 2 anos</h4>
+<ul>
+<li>Açúcar.</li>
+<li>Refrigerantes e bebidas açucaradas.</li>
+<li>Salgadinhos, embutidos e ultraprocessados.</li>
+<li>Macarrão instantâneo.</li>
+<li>Biscoitos recheados e achocolatados.</li>
+</ul>
+</div>
+<div class="food-card full">
+<h4>Mensagem final para os pais</h4>
+<p>Alimentar um bebê é apresentar o mundo através dos sabores, cores, texturas e experiências. Cada refeição é uma oportunidade de desenvolvimento, vínculo e aprendizado.</p>
+<p>Introdução alimentar não deve ser baseada em perfeição, mas em consistência, acolhimento, segurança e repetição saudável.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
 
-    <div class="alg-card">
-      <h4>Itens obrigatórios em toda consulta</h4>
-      <ul class="list">
-        <li>Peso e velocidade de crescimento.</li>
-        <li>Comprimento, quando menor de 2 anos, ou estatura.</li>
-        <li>IMC rotineiramente a partir dos 2 anos.</li>
-        <li>Perímetro cefálico até 2 anos.</li>
-        <li>Frequência cardíaca e frequência respiratória.</li>
-        <li>Pressão arterial conforme idade e fatores de risco.</li>
-        <li>Vacinas e conferência do calendário vacinal.</li>
-        <li>Desenvolvimento neuropsicomotor, linguagem e interação social.</li>
-        <li>Alimentação, sono, eliminações, segurança e tempo de tela.</li>
-      </ul>
+</section>
+<section class="section" id="sedacaoSRI">
+  <div class="card">
+    <h3>Sedação, analgesia e bloqueio neuromuscular</h3>
+    <div class="alert">
+      Calculadora de apoio para seleção e dose de hipnóticos, opioides e bloqueadores neuromusculares em emergência, sequência rápida de intubação e sedação leve. Não substitui avaliação médica, monitorização, preparo de via aérea e protocolo institucional.
     </div>
 
-    <div class="alg-card">
-      <h4>Recém-nascido</h4>
-      <ul class="list">
-        <li>Frequência cardíaca: 100–160 bpm.</li>
-        <li>Frequência respiratória: 30–60 irpm.</li>
-        <li>Pressão arterial sistólica: 60–80 mmHg.</li>
-        <li>Avaliar fontanelas, quadris, pulsos femorais e reflexos primitivos.</li>
-        <li>Vitamina D 400 UI/dia desde a primeira semana.</li>
-        <li>BCG e Hepatite B.</li>
-      </ul>
+    <div class="sed-grid-top">
+      <div>
+        <label>Peso, kg</label>
+        <input id="sedPeso" placeholder="Ex.: 18" step="0.1" type="number">
+      </div>
+      <div>
+        <label>Idade</label>
+        <input id="sedIdade" placeholder="Ex.: 4" step="1" type="number">
+      </div>
+      <div>
+        <label>Unidade da idade</label>
+        <select id="sedIdadeUnidade">
+          <option value="anos">Anos</option>
+          <option value="meses">Meses</option>
+        </select>
+      </div>
+      <div>
+        <label>Cenário clínico</label>
+        <select id="sedCenario">
+          <option value="sri">Sequência rápida de intubação</option>
+          <option value="leve">Sedação leve/procedural</option>
+          <option value="choque">Choque/instabilidade</option>
+          <option value="bronco">Broncoespasmo/asma grave</option>
+          <option value="tce">TCE/risco neurológico</option>
+        </select>
+      </div>
     </div>
 
-    <div class="alg-card">
-      <h4>Reflexos primitivos</h4>
-      <ul class="list">
-        <li>Moro: desaparece entre 4–6 meses.</li>
-        <li>Busca: desaparece entre 3–4 meses.</li>
-        <li>Sucção: integra entre 3–4 meses.</li>
-        <li>Preensão palmar: desaparece entre 4–6 meses.</li>
-        <li>Preensão plantar: desaparece entre 9–12 meses.</li>
-        <li>Marcha automática: desaparece entre 1–2 meses.</li>
-      </ul>
+    <div class="sed-check-grid">
+      <label class="sed-check"><input type="checkbox" id="sedHipotensao"> Hipotensão, choque ou hipovolemia</label>
+      <label class="sed-check"><input type="checkbox" id="sedQueimado"> Grande queimado &gt; 24–48h</label>
+      <label class="sed-check"><input type="checkbox" id="sedAcamado"> Acamado/imobilizado prolongado</label>
+      <label class="sed-check"><input type="checkbox" id="sedParaplegia"> Lesão medular, paraplegia ou doença neuromuscular</label>
+      <label class="sed-check"><input type="checkbox" id="sedHipercalemia"> Hipercalemia conhecida/suspeita</label>
+      <label class="sed-check"><input type="checkbox" id="sedHipertermia"> Hipertermia maligna pessoal/familiar</label>
+      <label class="sed-check"><input type="checkbox" id="sedGlobo"> Trauma ocular/globo aberto</label>
+      <label class="sed-check"><input type="checkbox" id="sedConvulsao"> Crise convulsiva/epilepsia ativa</label>
+      <label class="sed-check"><input type="checkbox" id="sedViaDificil"> Via aérea difícil prevista</label>
     </div>
 
-    <div class="alg-card">
-      <h4>Marcos importantes fora das consultas clássicas</h4>
-      <ul class="list">
-        <li>30 dias: prematuros iniciar ferro 2–4 mg/kg/dia.</li>
-        <li>3 meses: recém-nascido termo iniciar ferro 1 mg/kg/dia.</li>
-        <li>5–6 meses: preparação para introdução alimentar.</li>
-        <li>9–12 meses: primeira avaliação oftalmológica ideal.</li>
-        <li>2 anos: iniciar IMC rotineiramente.</li>
-        <li>3 anos: iniciar aferição anual da pressão arterial.</li>
-      </ul>
+    <button class="btn primary" onclick="sedCalcular()">Calcular doses</button>
+
+    <div class="sed-tabs">
+      <button class="sed-tab active" onclick="sedShowTab('sedHipnoticos', this)">Hipnóticos</button>
+      <button class="sed-tab" onclick="sedShowTab('sedBloqueadores', this)">Bloqueadores</button>
+      <button class="sed-tab" onclick="sedShowTab('sedOpioides', this)">Opioides</button>
+      <button class="sed-tab" onclick="sedShowTab('sedLeve', this)">Sedação leve</button>
+      <button class="sed-tab" onclick="sedShowTab('sedGuia', this)">Guia rápido</button>
     </div>
 
-    <div class="alg-card">
-      <h4>Desenvolvimento infantil — marcos rápidos</h4>
-      <ul class="list">
-        <li>2 meses: sorriso social e vocalização.</li>
-        <li>4 meses: inicia rolar.</li>
-        <li>6 meses: senta com apoio.</li>
-        <li>9 meses: pinça e responde ao nome.</li>
-        <li>12 meses: anda com apoio e primeiras palavras.</li>
-        <li>15–18 meses: brincadeira simbólica.</li>
-        <li>2 anos: frases simples e corre.</li>
-      </ul>
+    <div id="sedHipnoticos" class="sed-content active">
+      <div class="sed-card-grid" id="sedHipnoticosCards">
+    <div class="sed-drug">
+      <h4>Cetamina</h4>
+      <span class="small">Hipnótico dissociativo</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> SRI, choque, broncoespasmo e necessidade de analgesia associada.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Cautela em hipertensão grave, doença coronariana instável, psicose, hipersalivação e hipertensão intracraniana descompensada.</div>
+      
+    </div>
+  
+    <div class="sed-drug">
+      <h4>Etomidato</h4>
+      <span class="small">Hipnótico</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> Indução em SRI quando se deseja menor impacto hemodinâmico.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Cautela em sepse/choque séptico pela supressão adrenal transitória; pode causar mioclonias.</div>
+      
+    </div>
+  
+    <div class="sed-drug">
+      <h4>Propofol</h4>
+      <span class="small">Hipnótico</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> Indução ou sedação em paciente hemodinamicamente estável; início rápido e curta duração.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Evitar ou reduzir em hipotensão, choque, hipovolemia, risco de apneia ou instabilidade cardiovascular.</div>
+      
+    </div>
+  
+    <div class="sed-drug">
+      <h4>Midazolam</h4>
+      <span class="small">Benzodiazepínico</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> Sedação, ansiólise, crise convulsiva e complemento pós-intubação.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Pode causar hipotensão e depressão respiratória, especialmente com opioides.</div>
+      
+    </div>
+  </div>
     </div>
 
-    <div class="alg-card">
-      <h4>Puberdade feminina</h4>
-      <ul class="list">
-        <li>Telarca fisiológica: 8–13 anos.</li>
-        <li>M2: 8–11 anos.</li>
-        <li>M3: 10–13 anos.</li>
-        <li>M4: 11–14 anos.</li>
-        <li>M5: 13–15 anos.</li>
-        <li>Menarca média: 12–13 anos.</li>
-      </ul>
+    <div id="sedBloqueadores" class="sed-content">
+      <div class="sed-card-grid" id="sedBloqueadoresCards">
+    <div class="sed-drug">
+      <h4>Succinilcolina / Suxametônio</h4>
+      <span class="small">BNM despolarizante</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> SRI quando não há contraindicação; início rápido e curta duração.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Contraindicada em hipercalemia, queimadura &gt;24–48h, imobilização prolongada, lesão medular/paraplegia, doença neuromuscular, hipertermia maligna, deficiência de pseudo-colinesterase e trauma ocular/globo aberto.</div>
+      <div class="note">Checar potássio, queimaduras, imobilização, doença neuromuscular, hipertermia maligna e via aérea difícil antes de usar.</div>
+    </div>
+  
+    <div class="sed-drug">
+      <h4>Rocurônio</h4>
+      <span class="small">BNM não despolarizante</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> Alternativa à succinilcolina na SRI; útil quando há contraindicação à succinilcolina.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Duração prolongada. Exige sedação e analgesia contínuas após intubação.</div>
+      <div class="note">Bloqueio prolongado: risco de paciente paralisado sem sedação adequada. Programar sedoanalgesia imediatamente.</div>
+    </div>
+  
+    <div class="sed-drug">
+      <h4>Vecurônio</h4>
+      <span class="small">BNM não despolarizante</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> Manutenção de bloqueio neuromuscular em paciente intubado selecionado.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Não é primeira escolha para SRI por início mais lento que rocurônio/succinilcolina. Pode prolongar em disfunção hepática/renal.</div>
+      <div class="note">Uso preferencial para manutenção. Garantir sedação e analgesia contínuas durante o bloqueio.</div>
+    </div>
+  
+    <div class="sed-drug">
+      <h4>Atracúrio</h4>
+      <span class="small">BNM não despolarizante</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> Bloqueio neuromuscular para intubação ou manutenção em paciente crítico, especialmente quando se deseja menor dependência renal/hepática.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Pode liberar histamina e causar hipotensão/broncoespasmo, especialmente se administrado rapidamente. Cautela em instabilidade hemodinâmica e asma grave.</div>
+      <div class="note">Garantir sedação e analgesia adequadas durante todo o bloqueio neuromuscular.</div>
+    </div>
+  
+    <div class="sed-drug">
+      <h4>Cisatracúrio</h4>
+      <span class="small">BNM não despolarizante</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> Bloqueio neuromuscular em paciente crítico, manutenção em ventilação mecânica e alternativa quando se deseja menor liberação histamínica que atracúrio.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Início mais lento que succinilcolina/rocurônio para SRI. Exige sedação e analgesia contínuas.</div>
+      <div class="alert-green">Opção útil em paciente crítico, com menor liberação histamínica relativa. Não esquecer sedoanalgesia contínua.</div>
+    </div>
+  </div>
     </div>
 
-    <div class="alg-card">
-      <h4>Puberdade masculina</h4>
-      <ul class="list">
-        <li>Aumento testicular fisiológico: 9–14 anos.</li>
-        <li>Volume testicular puberal: &gt;4 mL.</li>
-        <li>G2: 9–11 anos.</li>
-        <li>G3: 11–13 anos.</li>
-        <li>G4: 13–15 anos.</li>
-        <li>G5: 15–17 anos.</li>
-      </ul>
+    <div id="sedOpioides" class="sed-content">
+      <div class="sed-card-grid" id="sedOpioidesCards">
+    <div class="sed-drug">
+      <h4>Fentanil</h4>
+      <span class="small">Opioide</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> Analgesia, pré-tratamento em resposta simpática e sedoanalgesia pós-intubação.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Pode causar depressão respiratória, rigidez torácica em bolus rápido/altas doses, bradicardia e hipotensão.</div>
+      
+    </div>
+  
+    <div class="sed-drug">
+      <h4>Morfina</h4>
+      <span class="small">Opioide</span>
+      <div class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+      <div class="sed-info"><strong>Indicação:</strong> Analgesia titulada em dor moderada/intensa; alternativa em sedoanalgesia.</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> Maior risco de hipotensão por liberação histamínica; início mais lento que fentanil.</div>
+      
+    </div>
+  </div>
     </div>
 
-    <div class="alg-card">
-      <h4>Pelos pubianos</h4>
-      <ul class="list">
-        <li>P2: 8–11 anos em meninas; 10–12 anos em meninos.</li>
-        <li>P3: 11–13 anos.</li>
-        <li>P4: 13–15 anos.</li>
-        <li>P5: 15–17 anos.</li>
-      </ul>
+    <div id="sedLeve" class="sed-content">
+      <div class="vm-card-grid">
+        <div class="alg-card">
+          <h4>Cetamina — sedação procedural</h4>
+          <ul class="list">
+            <li>Dose IV: 0,5–1 mg/kg para sedação procedural.</li>
+            <li>Dissociação/intubação: 1–2 mg/kg IV.</li>
+            <li>Vantagens: analgesia, estabilidade hemodinâmica relativa e utilidade no broncoespasmo.</li>
+            <li>Atenção: hipersalivação, vômitos, disforia e cautela em hipertensão intracraniana descompensada.</li>
+          </ul>
+          <div id="sedKetLeve" class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+        </div>
+        <div class="alg-card">
+          <h4>Propofol — sedação titulada</h4>
+          <ul class="list">
+            <li>Dose IV: 0,5–1 mg/kg titulada para sedação leve/procedural.</li>
+            <li>Indução: 1–2 mg/kg em paciente hemodinamicamente estável.</li>
+            <li>Vantagens: início rápido e curta duração.</li>
+            <li>Atenção: hipotensão, apneia e perda de reflexos protetores.</li>
+          </ul>
+          <div id="sedPropLeve" class="sed-dose"><span class="small">Informe o peso para calcular.</span></div>
+        </div>
+      </div>
     </div>
 
-    <div class="alg-card">
-      <h4>Desenvolvimento peniano</h4>
-      <ul class="list">
-        <li>Recém-nascido termo: média aproximada de 3,5 cm.</li>
-        <li>Faixa neonatal normal: 2,5–4,5 cm.</li>
-        <li>Suspeitar de micropênis se &lt;2 cm.</li>
-        <li>Pré-puberal: 5–7 cm.</li>
-      </ul>
-    </div>
-
-    <div class="alg-card">
-      <h4>Avaliação oftalmológica</h4>
-      <ul class="list">
-        <li>Teste do olhinho preferencialmente na maternidade.</li>
-        <li>Primeira avaliação completa ideal entre 6 meses e 1 ano.</li>
-        <li>Acuidade visual formal entre 4–5 anos.</li>
-        <li>Encaminhar precocemente em leucocoria, estrabismo ou prematuridade.</li>
-      </ul>
-    </div>
-
-    <div class="alg-card">
-      <h4>Vacinas importantes</h4>
-      <ul class="list">
-        <li>Ao nascer: BCG e Hepatite B.</li>
-        <li>2 meses: Pentavalente, VIP, Pneumocócica, Rotavírus e Meningocócica.</li>
-        <li>4 meses: reforços.</li>
-        <li>6 meses: Pentavalente, VIP e Influenza.</li>
-        <li>12 meses: Tríplice viral e Hepatite A.</li>
-        <li>Adolescência: HPV, ACWY e dT/dTpa.</li>
-      </ul>
-    </div>
-
-    <div class="alg-card">
-      <h4>Tabela prática de pressão arterial pediátrica</h4>
-      <div class="table-wrap">
-        <table class="med-table">
-          <thead>
-            <tr>
-              <th>Idade</th>
-              <th>Hipotensão</th>
-              <th>Normotensão</th>
-              <th>PA elevada</th>
-              <th>HAS estágio 1</th>
-              <th>HAS estágio 2</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>RN</td><td>&lt;60</td><td>60–80</td><td>—</td><td>—</td><td>—</td></tr>
-            <tr><td>1–12 meses</td><td>&lt;70</td><td>70–100</td><td>—</td><td>—</td><td>—</td></tr>
-            <tr><td>1–3 anos</td><td>&lt;72</td><td>80–100/50–70</td><td>&gt;100/70</td><td>&gt;105/70</td><td>&gt;115/80</td></tr>
-            <tr><td>4–5 anos</td><td>&lt;74</td><td>85–105/55–75</td><td>&gt;105/75</td><td>&gt;110/75</td><td>&gt;120/80</td></tr>
-            <tr><td>6–9 anos</td><td>&lt;76</td><td>90–110/60–75</td><td>&gt;110/75</td><td>&gt;115/75</td><td>&gt;125/85</td></tr>
-            <tr><td>10–12 anos</td><td>&lt;80</td><td>95–120/60–80</td><td>&gt;120/&lt;80</td><td>130/80–139/89</td><td>≥140/90</td></tr>
-            <tr><td>≥13 anos</td><td>&lt;90</td><td>&lt;120/&lt;80</td><td>120–129/&lt;80</td><td>130/80–139/89</td><td>≥140/90</td></tr>
-          </tbody>
-        </table>
+    <div id="sedGuia" class="sed-content">
+      <div class="vm-card-grid">
+        <div class="alg-card">
+          <h4>Paciente hipotenso / choque</h4>
+          <ul class="list">
+            <li>Preferir cetamina ou etomidato.</li>
+            <li>Evitar ou reduzir propofol e midazolam.</li>
+            <li>Preparar vasopressor, fluidos e plano de via aérea.</li>
+          </ul>
+        </div>
+        <div class="alg-card">
+          <h4>Broncoespasmo / asma grave</h4>
+          <ul class="list">
+            <li>Cetamina é opção favorável por efeito broncodilatador.</li>
+            <li>Evitar hipoventilação e hiperinsuflação dinâmica.</li>
+          </ul>
+        </div>
+        <div class="alg-card">
+          <h4>Contraindicação à succinilcolina</h4>
+          <ul class="list">
+            <li>Grande queimado após 24–48h.</li>
+            <li>Lesão medular, paraplegia, doença neuromuscular ou imobilização prolongada.</li>
+            <li>Hipercalemia, hipertermia maligna e globo ocular aberto.</li>
+            <li>Usar rocurônio como alternativa usual para SRI.</li>
+          </ul>
+        </div>
+        <div class="alg-card">
+          <h4>Via aérea difícil prevista</h4>
+          <ul class="list">
+            <li>Não paralisar sem plano claro de resgate.</li>
+            <li>Considerar equipe experiente, material alternativo e abordagem acordada/titulada.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+
 <div class="footer">
   Emergys · Inteligência para decisões críticas · Ferramenta de apoio profissional com conferência obrigatória.
 </div>
@@ -6070,6 +6630,43 @@ function interpretarGasometria(){
 function renderEscala(){const tipo=escalaTipo.value,el=escalaCampos;if(tipo==="glasgow")el.innerHTML=`<div class="grid-3"><div><label>Ocular</label><select id="gO"><option value="4">4 espontânea</option><option value="3">3 ao chamado</option><option value="2">2 à dor</option><option value="1">1 nenhuma</option></select></div><div><label>Verbal</label><select id="gV"><option value="5">5 orientada</option><option value="4">4 confusa</option><option value="3">3 palavras</option><option value="2">2 sons</option><option value="1">1 nenhuma</option></select></div><div><label>Motora</label><select id="gM"><option value="6">6 obedece</option><option value="5">5 localiza dor</option><option value="4">4 retira</option><option value="3">3 flexão anormal</option><option value="2">2 extensão</option><option value="1">1 nenhuma</option></select></div></div>`;else if(tipo==="qsofa")el.innerHTML=`<div class="grid-3"><div><label>FR ≥22</label><select id="qFr"><option value="0">Não</option><option value="1">Sim</option></select></div><div><label>PAS ≤100</label><select id="qPa"><option value="0">Não</option><option value="1">Sim</option></select></div><div><label>Alteração mental</label><select id="qMent"><option value="0">Não</option><option value="1">Sim</option></select></div></div>`;else if(tipo==="curb65")el.innerHTML=`<div class="grid-3"><div><label>Confusão</label><select id="cConf"><option value="0">Não</option><option value="1">Sim</option></select></div><div><label>Ureia elevada</label><select id="cU"><option value="0">Não</option><option value="1">Sim</option></select></div><div><label>FR ≥30</label><select id="cFr"><option value="0">Não</option><option value="1">Sim</option></select></div><div><label>PA baixa</label><select id="cPa"><option value="0">Não</option><option value="1">Sim</option></select></div><div><label>Idade ≥65</label><select id="cId"><option value="0">Não</option><option value="1">Sim</option></select></div></div>`;else el.innerHTML=`<div class="grid-3"><div><label>História</label><select id="hHis"><option value="0">0 baixa</option><option value="1">1 moderada</option><option value="2">2 alta</option></select></div><div><label>ECG</label><select id="hEcg"><option value="0">0 normal</option><option value="1">1 inespecífico</option><option value="2">2 alteração significativa</option></select></div><div><label>Idade</label><select id="hId"><option value="0">0 &lt;45</option><option value="1">1 45–64</option><option value="2">2 ≥65</option></select></div><div><label>Fatores de risco</label><select id="hFr"><option value="0">0 nenhum</option><option value="1">1 1–2 fatores</option><option value="2">2 ≥3 fatores/aterosclerose</option></select></div><div><label>Troponina</label><select id="hTro"><option value="0">0 normal</option><option value="1">1 1–3x</option><option value="2">2 &gt;3x</option></select></div></div>`}
 function calcularEscala(){const tipo=escalaTipo.value,out=resultadoEscala;let total=0,nome="";if(tipo==="glasgow"){total=Number(gO.value)+Number(gV.value)+Number(gM.value);nome="Glasgow"}else if(tipo==="qsofa"){total=Number(qFr.value)+Number(qPa.value)+Number(qMent.value);nome="qSOFA"}else if(tipo==="curb65"){total=Number(cConf.value)+Number(cU.value)+Number(cFr.value)+Number(cPa.value)+Number(cId.value);nome="CURB-65"}else{total=Number(hHis.value)+Number(hEcg.value)+Number(hId.value)+Number(hFr.value)+Number(hTro.value);nome="HEART simplificado"}const texto=`${nome}: ${total} ponto(s).`;out.innerHTML=`<div class="result"><h4>${nome}</h4><div class="dose-box"><strong>Resultado:</strong> ${total} ponto(s).</div>${blocoPrescricao("Texto para copiar",texto)}</div>`}
 
+
+function calcularSodioCorrigido(){
+  const na = parseFloat(document.getElementById("naCorrSodio")?.value || 0);
+  const glicose = parseFloat(document.getElementById("naCorrGlicose")?.value || 0);
+  const fator = parseFloat(document.getElementById("naCorrFator")?.value || 1.6);
+  const out = document.getElementById("resultadoSodioCorrigido");
+
+  if(!out) return;
+
+  if(!na || !glicose){
+    out.innerHTML = `<div class="alert">Preencha o sódio medido e a glicemia.</div>`;
+    return;
+  }
+
+  const excesso = Math.max(0, glicose - 100);
+  const correcao = fator * (excesso / 100);
+  const naCorrigido = na + correcao;
+
+  let classe = "";
+  if(naCorrigido < 135) classe = "Hiponatremia verdadeira ou parcialmente corrigida";
+  else if(naCorrigido <= 145) classe = "Sódio corrigido dentro da faixa usual";
+  else classe = "Hipernatremia após correção";
+
+  out.innerHTML = `
+    <div class="result">
+      <h4>Resultado</h4>
+      <div class="dose-box"><strong>Sódio corrigido:</strong> ${naCorrigido.toFixed(1).replace(".",",")} mEq/L</div>
+      <div class="dose-box"><strong>Correção aplicada:</strong> +${correcao.toFixed(1).replace(".",",")} mEq/L pelo fator ${fator.toString().replace(".",",")}</div>
+      <div class="dose-box"><strong>Interpretação:</strong> ${classe}</div>
+      <div class="note">
+        Fórmula: sódio corrigido = sódio medido + fator × ((glicemia − 100) / 100). 
+        Usar fator 1,6 como referência clássica; fator 2,4 pode ser considerado em hiperglicemia importante, conforme julgamento clínico e protocolo local.
+      </div>
+    </div>
+  `;
+}
+
 function calcularPotassio(){
   const peso=parseFloat(document.getElementById("kPeso").value);
   const atual=parseFloat(document.getElementById("kAtual").value);
@@ -6272,6 +6869,31 @@ function renderScore(){
     ${sel("sc1","Abertura ocular",[[4,"4 — espontânea"],[3,"3 — ao chamado"],[2,"2 — à dor"],[1,"1 — nenhuma"]])}
     ${sel("sc2","Resposta verbal pediátrica",[[5,"5 — sorri/balbucia/orientada"],[4,"4 — choro consolável/confusa"],[3,"3 — choro persistente/palavras inadequadas"],[2,"2 — agitada/grunhidos/sons"],[1,"1 — nenhuma"]])}
     ${sel("sc3","Resposta motora",[[6,"6 — espontânea/obedece"],[5,"5 — localiza dor"],[4,"4 — retira à dor"],[3,"3 — flexão anormal"],[2,"2 — extensão"],[1,"1 — nenhuma"]])}</div>`;
+  }else if(tipo==="pram"){
+    el.innerHTML=`<div class="grid-3">
+    ${sel("sc1","Tiragem supraclavicular",[[0,"0 — ausente"],[2,"2 — presente"]],"PRAM: avalia gravidade de exacerbação asmática pediátrica; pontuação total 0–12.")}
+    ${sel("sc2","Contração de escalenos",[[0,"0 — ausente"],[2,"2 — presente"]],"Sinal de maior esforço respiratório.")}
+    ${sel("sc3","Entrada de ar",[[0,"0 — normal"],[1,"1 — diminuída nas bases"],[2,"2 — diminuída difusamente"],[3,"3 — mínima ou ausente"]],"Pontuar conforme ausculta global.")}
+    ${sel("sc4","Sibilância",[[0,"0 — ausente"],[1,"1 — expiratória"],[2,"2 — inspiratória e expiratória"],[3,"3 — ausente com entrada de ar mínima"]],"Silêncio auscultatório com pouca entrada de ar pontua como grave.")}
+    ${sel("sc5","SpO₂ em ar ambiente",[[0,"0 — ≥95%"],[1,"1 — 92–94%"],[2,"2 — <92%"]],"Classificação usual: 0–3 leve; 4–7 moderada; 8–12 grave.")}
+    </div>
+    <div class="note">
+      <strong>PRAM — Pediatric Respiratory Assessment Measure.</strong><br>
+      Escore clínico para exacerbação de asma em crianças, somando tiragem supraclavicular, uso de escalenos, entrada de ar, sibilância e saturação em ar ambiente.
+      Útil para classificar gravidade, acompanhar resposta ao tratamento e apoiar decisão de observação, internação ou escalonamento.
+    </div>
+    <div class="alg-card">
+      <h4>Classificação e indicações práticas</h4>
+      <ul class="list">
+        <li><strong>0–3:</strong> exacerbação leve — broncodilatador inalatório, reavaliação clínica e orientação de plano de ação.</li>
+        <li><strong>4–7:</strong> exacerbação moderada — salbutamol repetido, considerar ipratrópio nas primeiras doses, corticoide sistêmico precoce, observação e reavaliação seriada.</li>
+        <li><strong>8–12:</strong> exacerbação grave — oxigênio se hipoxemia, salbutamol frequente/contínuo conforme protocolo, ipratrópio, corticoide sistêmico, magnésio EV se má resposta, monitorização e considerar UTI.</li>
+        <li><strong>Alerta crítico:</strong> sonolência, exaustão, cianose, silêncio auscultatório, SpO₂ persistentemente baixa, hipercapnia ou alteração do nível de consciência exigem abordagem imediata e preparo para suporte ventilatório.</li>
+      </ul>
+    </div>
+    <div class="note">
+      Base conceitual alinhada ao GINA 2026 para exacerbação de asma: avaliar gravidade, oxigenação, sinais de ameaça à vida, resposta ao broncodilatador e necessidade de corticoide sistêmico/encaminhamento. Adequar às recomendações nacionais e ao protocolo institucional.
+    </div>`;
   }else if(tipo==="qsofa"){
     el.innerHTML=`<div class="grid-3">
     ${sel("sc1","Frequência respiratória",[[0,"0 — FR <22"],[1,"1 — FR ≥22 irpm"]])}
@@ -6409,6 +7031,236 @@ window.onload = function(){
 };
 
 </script>
-<button class="supabase-logout" onclick="sairEmergys()">Sair</button>
+
+<script>
+const sedMeds = {
+  hipnoticos: [
+    {
+      nome:"Cetamina",
+      classe:"Hipnótico dissociativo",
+      doseMin:1,
+      doseMax:2,
+      unidade:"mg/kg IV",
+      indicacao:"SRI, choque, broncoespasmo e necessidade de analgesia associada.",
+      restricao:"Cautela em hipertensão grave, doença coronariana instável, psicose, hipersalivação e hipertensão intracraniana descompensada.",
+      alerta:function(){
+        if(sedCheck("bronco") || sedCheck("choque") || sedCheck("sedHipotensao")) return ["green","Boa opção no choque/broncoespasmo pela menor depressão hemodinâmica relativa."];
+        return null;
+      }
+    },
+    {
+      nome:"Etomidato",
+      classe:"Hipnótico",
+      doseMin:0.2,
+      doseMax:0.3,
+      unidade:"mg/kg IV",
+      indicacao:"Indução em SRI quando se deseja menor impacto hemodinâmico.",
+      restricao:"Cautela em sepse/choque séptico pela supressão adrenal transitória; pode causar mioclonias.",
+      alerta:function(){
+        if(sedCheck("sedHipotensao")) return ["green","Opção hemodinamicamente estável para indução; ponderar contexto séptico."];
+        return null;
+      }
+    },
+    {
+      nome:"Propofol",
+      classe:"Hipnótico",
+      doseMin:1,
+      doseMax:2,
+      unidade:"mg/kg IV",
+      indicacao:"Indução ou sedação em paciente hemodinamicamente estável; início rápido e curta duração.",
+      restricao:"Evitar ou reduzir em hipotensão, choque, hipovolemia, risco de apneia ou instabilidade cardiovascular.",
+      alerta:function(){
+        if(sedCheck("sedHipotensao") || sedCheck("choque")) return ["red","Risco relevante de hipotensão/apneia. Evitar ou reduzir dose e titular com extrema cautela."];
+        return null;
+      }
+    },
+    {
+      nome:"Midazolam",
+      classe:"Benzodiazepínico",
+      doseMin:0.05,
+      doseMax:0.1,
+      unidade:"mg/kg IV",
+      indicacao:"Sedação, ansiólise, crise convulsiva e complemento pós-intubação.",
+      restricao:"Pode causar hipotensão e depressão respiratória, especialmente com opioides.",
+      alerta:function(){
+        if(sedCheck("sedHipotensao")) return ["yellow","Pode piorar hipotensão. Considerar dose menor e titulação lenta."];
+        return null;
+      }
+    }
+  ],
+  bloqueadores: [
+    {
+      nome:"Succinilcolina / Suxametônio",
+      classe:"BNM despolarizante",
+      doseMin:1,
+      doseMax:1.5,
+      unidade:"mg/kg IV",
+      indicacao:"SRI quando não há contraindicação; início rápido e curta duração.",
+      restricao:"Contraindicada em hipercalemia, queimadura >24–48h, imobilização prolongada, lesão medular/paraplegia, doença neuromuscular, hipertermia maligna, deficiência de pseudo-colinesterase e trauma ocular/globo aberto.",
+      alerta:function(){
+        if(sedCheck("sedQueimado") || sedCheck("sedAcamado") || sedCheck("sedParaplegia") || sedCheck("sedHipercalemia") || sedCheck("sedHipertermia") || sedCheck("sedGlobo")){
+          return ["red","Contraindicação ou alto risco para succinilcolina. Preferir rocurônio se bloqueio neuromuscular for indicado."];
+        }
+        return ["yellow","Checar potássio, queimaduras, imobilização, doença neuromuscular, hipertermia maligna e via aérea difícil antes de usar."];
+      }
+    },
+    {
+      nome:"Rocurônio",
+      classe:"BNM não despolarizante",
+      doseMin:1,
+      doseMax:1.2,
+      unidade:"mg/kg IV",
+      indicacao:"Alternativa à succinilcolina na SRI; útil quando há contraindicação à succinilcolina.",
+      restricao:"Duração prolongada. Exige sedação e analgesia contínuas após intubação.",
+      alerta:function(){ return ["yellow","Bloqueio prolongado: risco de paciente paralisado sem sedação adequada. Programar sedoanalgesia imediatamente."]; }
+    },
+    {
+      nome:"Vecurônio",
+      classe:"BNM não despolarizante",
+      doseMin:0.1,
+      doseMax:0.2,
+      unidade:"mg/kg IV",
+      indicacao:"Manutenção de bloqueio neuromuscular em paciente intubado selecionado.",
+      restricao:"Não é primeira escolha para SRI por início mais lento que rocurônio/succinilcolina. Pode prolongar em disfunção hepática/renal.",
+      alerta:function(){ return ["yellow","Uso preferencial para manutenção. Garantir sedação e analgesia contínuas durante o bloqueio."]; }
+    },
+    {
+      nome:"Atracúrio",
+      classe:"BNM não despolarizante",
+      doseMin:0.4,
+      doseMax:0.5,
+      unidade:"mg/kg IV",
+      indicacao:"Bloqueio neuromuscular para intubação ou manutenção em paciente crítico, especialmente quando se deseja menor dependência renal/hepática.",
+      restricao:"Pode liberar histamina e causar hipotensão/broncoespasmo, especialmente se administrado rapidamente. Cautela em instabilidade hemodinâmica e asma grave.",
+      alerta:function(){
+        if(sedCheck("sedHipotensao")) return ["yellow","Pode causar hipotensão por liberação histamínica. Administrar lentamente e ponderar alternativa se instável."];
+        if(sedCheck("bronco")) return ["yellow","Cautela em broncoespasmo/asma grave por possível liberação histamínica."];
+        return ["yellow","Garantir sedação e analgesia adequadas durante todo o bloqueio neuromuscular."];
+      }
+    },
+    {
+      nome:"Cisatracúrio",
+      classe:"BNM não despolarizante",
+      doseMin:0.15,
+      doseMax:0.2,
+      unidade:"mg/kg IV",
+      indicacao:"Bloqueio neuromuscular em paciente crítico, manutenção em ventilação mecânica e alternativa quando se deseja menor liberação histamínica que atracúrio.",
+      restricao:"Início mais lento que succinilcolina/rocurônio para SRI. Exige sedação e analgesia contínuas.",
+      alerta:function(){ return ["green","Opção útil em paciente crítico, com menor liberação histamínica relativa. Não esquecer sedoanalgesia contínua."]; }
+    }
+  ],
+  opioides: [
+    {
+      nome:"Fentanil",
+      classe:"Opioide",
+      doseMin:1,
+      doseMax:2,
+      unidade:"mcg/kg IV",
+      indicacao:"Analgesia, pré-tratamento em resposta simpática e sedoanalgesia pós-intubação.",
+      restricao:"Pode causar depressão respiratória, rigidez torácica em bolus rápido/altas doses, bradicardia e hipotensão.",
+      alerta:function(){
+        if(sedCheck("sedHipotensao")) return ["yellow","Usar dose menor e infusão lenta se hipotensão ou choque."];
+        return null;
+      }
+    },
+    {
+      nome:"Morfina",
+      classe:"Opioide",
+      doseMin:0.05,
+      doseMax:0.1,
+      unidade:"mg/kg IV",
+      indicacao:"Analgesia titulada em dor moderada/intensa; alternativa em sedoanalgesia.",
+      restricao:"Maior risco de hipotensão por liberação histamínica; início mais lento que fentanil.",
+      alerta:function(){
+        if(sedCheck("sedHipotensao")) return ["red","Evitar ou usar extrema cautela em hipotensão/choque."];
+        return null;
+      }
+    }
+  ]
+};
+
+function sedCheck(id){
+  if(id === "choque") return document.getElementById("sedCenario")?.value === "choque";
+  if(id === "bronco") return document.getElementById("sedCenario")?.value === "bronco";
+  const el = document.getElementById(id);
+  return el && el.checked;
+}
+
+function sedPeso(){
+  return parseFloat(document.getElementById("sedPeso")?.value || 0);
+}
+
+function sedFmt(n){
+  if(!isFinite(n)) return "";
+  if(n < 1) return n.toFixed(2).replace(".",",");
+  if(n < 10) return n.toFixed(1).replace(".",",");
+  return Math.round(n).toString();
+}
+
+function sedDoseHTML(med){
+  const p = sedPeso();
+  if(!p) return `<span class="small">Informe o peso para calcular.</span>`;
+  const min = med.doseMin * p;
+  const max = med.doseMax * p;
+  const unidadeFinal = med.unidade.replace("/kg","");
+  return `<strong>${sedFmt(min)} – ${sedFmt(max)} ${unidadeFinal}</strong><br><span class="small">${med.doseMin}–${med.doseMax} ${med.unidade}</span>`;
+}
+
+function sedDrugCard(med){
+  const alerta = med.alerta ? med.alerta() : null;
+  const alertClass = alerta ? (alerta[0] === "red" ? "alert" : alerta[0] === "green" ? "alert-green" : "note") : "";
+  return `
+    <div class="sed-drug">
+      <h4>${med.nome}</h4>
+      <span class="small">${med.classe}</span>
+      <div class="sed-dose">${sedDoseHTML(med)}</div>
+      <div class="sed-info"><strong>Indicação:</strong> ${med.indicacao}</div>
+      <div class="sed-info"><strong>Restrições/atenção:</strong> ${med.restricao}</div>
+      ${alerta ? `<div class="${alertClass}">${alerta[1]}</div>` : ""}
+    </div>
+  `;
+}
+
+function sedCalcular(){
+  const h = document.getElementById("sedHipnoticosCards");
+  const b = document.getElementById("sedBloqueadoresCards");
+  const o = document.getElementById("sedOpioidesCards");
+  if(h) h.innerHTML = sedMeds.hipnoticos.map(sedDrugCard).join("");
+  if(b) b.innerHTML = sedMeds.bloqueadores.map(sedDrugCard).join("");
+  if(o) o.innerHTML = sedMeds.opioides.map(sedDrugCard).join("");
+
+  const p = sedPeso();
+  const ket = document.getElementById("sedKetLeve");
+  const prop = document.getElementById("sedPropLeve");
+  if(ket) ket.innerHTML = p ? `<strong>${sedFmt(0.5*p)} – ${sedFmt(1*p)} mg IV</strong><br><span class="small">Sedação procedural: 0,5–1 mg/kg IV. Dissociação/intubação: 1–2 mg/kg IV.</span>` : `<span class="small">Informe o peso para calcular.</span>`;
+  if(prop) prop.innerHTML = p ? `<strong>${sedFmt(0.5*p)} – ${sedFmt(1*p)} mg IV</strong><br><span class="small">Sedação leve/procedural: 0,5–1 mg/kg IV titulável. Indução: 1–2 mg/kg se estável.</span>` : `<span class="small">Informe o peso para calcular.</span>`;
+}
+
+function sedShowTab(id, btn){
+  document.querySelectorAll(".sed-content").forEach(el => el.classList.remove("active"));
+  const target = document.getElementById(id);
+  if(target) target.classList.add("active");
+  document.querySelectorAll(".sed-tab").forEach(el => el.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+  if(document.getElementById("sedacaoSRI")) sedCalcular();
+  const sedInputs = document.querySelectorAll("#sedacaoSRI input, #sedacaoSRI select");
+  sedInputs.forEach(el => el.addEventListener("input", sedCalcular));
+  sedInputs.forEach(el => el.addEventListener("change", sedCalcular));
+});
+</script>
+
+
+<script>
+function puerShowTab(id, btn){
+  document.querySelectorAll(".puer-subsection").forEach(el => el.classList.remove("active"));
+  const target = document.getElementById(id);
+  if(target) target.classList.add("active");
+  document.querySelectorAll(".puer-tab").forEach(el => el.classList.remove("active"));
+  if(btn) btn.classList.add("active");
+}
+</script>
 
 </body></html>
