@@ -16,14 +16,9 @@
   --dourado:#C7A46A;
   --salvia:#8AAE92;
   --muted:rgba(255,255,255,.70);
-  --erro:#B64A4A;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
   min-height:100vh;
@@ -50,74 +45,26 @@ body{
   box-shadow:0 30px 90px rgba(0,0,0,.35);
 }
 
-.logo{
-  display:flex;
-  align-items:center;
-  gap:14px;
-  margin-bottom:30px;
-}
-
+.logo{display:flex;align-items:center;gap:14px;margin-bottom:30px}
 .logo-mark{
-  width:58px;
-  height:58px;
-  border-radius:18px;
+  width:58px;height:58px;border-radius:18px;
   background:linear-gradient(145deg,var(--azul2),var(--azul));
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  display:flex;align-items:center;justify-content:center;
   border:1px solid rgba(199,164,106,.35);
 }
-
-.logo-mark svg{
-  width:42px;
-  height:42px;
-  overflow:visible;
-}
-
-.logo-text{
-  font-family:Manrope,sans-serif;
-  font-size:23px;
-  letter-spacing:6px;
-  font-weight:800;
-}
-
-.logo-text span{
-  color:var(--dourado);
-}
-
+.logo-mark svg{width:42px;height:42px;overflow:visible}
+.logo-text{font-family:Manrope,sans-serif;font-size:23px;letter-spacing:6px;font-weight:800}
+.logo-text span{color:var(--dourado)}
 .logo-sub{
-  display:block;
-  margin-top:4px;
-  font-family:Inter,sans-serif;
-  font-size:9px;
-  letter-spacing:.28em;
-  color:var(--salvia);
-  font-weight:700;
-  text-transform:uppercase;
+  display:block;margin-top:4px;font-family:Inter,sans-serif;
+  font-size:9px;letter-spacing:.28em;color:var(--salvia);
+  font-weight:700;text-transform:uppercase;
 }
 
-h1{
-  font-family:Manrope,sans-serif;
-  font-size:36px;
-  line-height:1.05;
-  letter-spacing:-1.4px;
-  margin-bottom:12px;
-}
+h1{font-family:Manrope,sans-serif;font-size:36px;line-height:1.05;letter-spacing:-1.4px;margin-bottom:12px}
+p{color:var(--muted);line-height:1.7;font-size:15px;margin-bottom:28px}
 
-p{
-  color:var(--muted);
-  line-height:1.7;
-  font-size:15px;
-  margin-bottom:28px;
-}
-
-label{
-  display:block;
-  margin-bottom:8px;
-  color:var(--dourado);
-  font-size:13px;
-  font-weight:800;
-}
+label{display:block;margin-bottom:8px;color:var(--dourado);font-size:13px;font-weight:800}
 
 input{
   width:100%;
@@ -131,14 +78,8 @@ input{
   margin-bottom:18px;
 }
 
-input::placeholder{
-  color:rgba(255,255,255,.38);
-}
-
-input:focus{
-  border-color:var(--dourado);
-  box-shadow:0 0 0 3px rgba(199,164,106,.16);
-}
+input::placeholder{color:rgba(255,255,255,.38)}
+input:focus{border-color:var(--dourado);box-shadow:0 0 0 3px rgba(199,164,106,.16)}
 
 button{
   width:100%;
@@ -153,15 +94,8 @@ button{
   transition:.2s ease;
 }
 
-button:hover{
-  transform:translateY(-1px);
-}
-
-button:disabled{
-  opacity:.55;
-  cursor:not-allowed;
-  transform:none;
-}
+button:hover{transform:translateY(-1px)}
+button:disabled{opacity:.55;cursor:not-allowed;transform:none}
 
 .secondary-btn{
   margin-top:12px;
@@ -201,21 +135,9 @@ button:disabled{
   border:1px solid rgba(138,174,146,.38);
 }
 
-.links{
-  margin-top:18px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.links button{
-  padding:15px;
-  font-size:14px;
-}
-
-.hidden{
-  display:none;
-}
+.links{margin-top:18px;display:flex;flex-direction:column;gap:10px}
+.links button{padding:15px;font-size:14px}
+.hidden{display:none}
 
 .footer{
   margin-top:22px;
@@ -224,11 +146,7 @@ button:disabled{
   color:var(--muted);
 }
 
-.footer a{
-  color:var(--dourado);
-  text-decoration:none;
-  font-weight:700;
-}
+.footer a{color:var(--dourado);text-decoration:none;font-weight:700}
 </style>
 </head>
 
@@ -255,9 +173,7 @@ button:disabled{
   <div id="loginBox">
     <h1>Acesso profissional</h1>
 
-    <p>
-      Entre com seu e-mail e senha para acessar a plataforma Emergys.
-    </p>
+    <p>Entre com seu e-mail e senha para acessar a plataforma Emergys.</p>
 
     <label>E-mail</label>
     <input type="email" id="email" placeholder="seuemail@email.com" autocomplete="email">
@@ -265,9 +181,7 @@ button:disabled{
     <label>Senha</label>
     <input type="password" id="senha" placeholder="Digite sua senha" autocomplete="current-password">
 
-    <button id="btnLogin" type="button">
-      Acessar plataforma
-    </button>
+    <button id="btnLogin" type="button">Acessar plataforma</button>
 
     <div class="links">
       <button class="secondary-btn" id="btnPrimeiroAcesso" type="button">
@@ -283,9 +197,7 @@ button:disabled{
   <div id="senhaBox" class="hidden">
     <h1>Criar nova senha</h1>
 
-    <p>
-      Defina uma senha para acessar sua conta Emergys.
-    </p>
+    <p>Defina uma senha para acessar sua conta Emergys.</p>
 
     <label>Nova senha</label>
     <input type="password" id="novaSenha" placeholder="Digite uma nova senha" autocomplete="new-password">
@@ -293,9 +205,7 @@ button:disabled{
     <label>Confirmar senha</label>
     <input type="password" id="confirmarSenha" placeholder="Confirme a nova senha" autocomplete="new-password">
 
-    <button id="btnSalvarSenha" type="button">
-      Salvar nova senha
-    </button>
+    <button id="btnSalvarSenha" type="button">Salvar nova senha</button>
   </div>
 
   <div id="msg" class="msg info">
@@ -326,10 +236,6 @@ function mostrar(texto, tipo="info"){
   msg.textContent = texto;
 }
 
-if(!window.supabase){
-  mostrar("Erro: não foi possível carregar a autenticação.", "erro");
-}
-
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
@@ -341,9 +247,7 @@ btnRecuperar.addEventListener("click", solicitarCriacaoSenha);
 btnSalvarSenha.addEventListener("click", salvarNovaSenha);
 
 document.getElementById("senha").addEventListener("keydown", function(e){
-  if(e.key === "Enter"){
-    login();
-  }
+  if(e.key === "Enter") login();
 });
 
 function abrirTelaSenha(){
@@ -363,19 +267,12 @@ async function detectarLinkSupabase(){
     search.includes("type=recovery") ||
     search.includes("type=invite");
 
-  if(!temToken){
-    return;
-  }
+  if(!temToken) return;
 
   mostrar("Validando link de acesso...", "info");
 
   try{
-    const { data, error } = await supabaseClient.auth.getSession();
-
-    if(error){
-      mostrar("Não foi possível validar o link. Solicite um novo acesso.", "erro");
-      return;
-    }
+    const { data } = await supabaseClient.auth.getSession();
 
     if(data && data.session){
       abrirTelaSenha();
@@ -388,13 +285,56 @@ async function detectarLinkSupabase(){
       if(data2 && data2.session){
         abrirTelaSenha();
       }else{
-        mostrar("Link aberto, mas a sessão não foi detectada. Solicite um novo link de criação de senha.", "erro");
+        mostrar("Link aberto, mas a sessão não foi detectada. Solicite um novo link.", "erro");
       }
     }, 1200);
 
   }catch(e){
     mostrar("Erro ao validar o link de acesso.", "erro");
   }
+}
+
+async function validarAssinatura(user){
+  const email = user.email;
+
+  const { data: profile, error } = await supabaseClient
+    .from("profiles")
+    .select("ativo, validade, plano")
+    .eq("email", email)
+    .maybeSingle();
+
+  if(error){
+    await supabaseClient.auth.signOut();
+    mostrar("Não foi possível consultar sua assinatura. Tente novamente ou acione o suporte.", "erro");
+    return false;
+  }
+
+  if(!profile){
+    await supabaseClient.auth.signOut();
+    mostrar("Usuário sem assinatura vinculada. Regularize o acesso para continuar.", "erro");
+    return false;
+  }
+
+  if(profile.ativo !== true){
+    await supabaseClient.auth.signOut();
+    mostrar("Sua assinatura está inativa. Regularize o pagamento para continuar.", "erro");
+    return false;
+  }
+
+  if(profile.validade){
+    const hoje = new Date();
+    hoje.setHours(0,0,0,0);
+
+    const validade = new Date(profile.validade + "T23:59:59");
+
+    if(validade < hoje){
+      await supabaseClient.auth.signOut();
+      mostrar("Seu acesso expirou. Renove sua assinatura para continuar.", "erro");
+      return false;
+    }
+  }
+
+  return true;
 }
 
 async function login(){
@@ -418,6 +358,16 @@ async function login(){
 
     if(error || !data.user){
       mostrar("E-mail ou senha inválidos.", "erro");
+      btnLogin.disabled = false;
+      btnLogin.textContent = "Acessar plataforma";
+      return;
+    }
+
+    mostrar("Login aceito. Verificando assinatura...", "info");
+
+    const assinaturaOk = await validarAssinatura(data.user);
+
+    if(!assinaturaOk){
       btnLogin.disabled = false;
       btnLogin.textContent = "Acessar plataforma";
       return;
@@ -462,20 +412,13 @@ async function solicitarCriacaoSenha(){
     }catch(e){}
 
     if(!resposta.ok){
-      mostrar(
-        "Não foi possível enviar o e-mail: " + (resultado.error || "erro desconhecido"),
-        "erro"
-      );
-
+      mostrar("Não foi possível enviar o e-mail: " + (resultado.error || "erro desconhecido"), "erro");
       btnPrimeiroAcesso.disabled = false;
       btnRecuperar.disabled = false;
       return;
     }
 
-    mostrar(
-      "E-mail enviado com sucesso.\n\nAbra o link recebido para criar ou alterar sua senha.",
-      "sucesso"
-    );
+    mostrar("E-mail enviado com sucesso.\n\nAbra o link recebido para criar ou alterar sua senha.", "sucesso");
 
   }catch(e){
     mostrar("Erro inesperado ao enviar o e-mail de acesso.", "erro");
@@ -508,7 +451,7 @@ async function salvarNovaSenha(){
   btnSalvarSenha.textContent = "Salvando...";
 
   try{
-    const { error } = await supabaseClient.auth.updateUser({
+    const { data, error } = await supabaseClient.auth.updateUser({
       password: novaSenha
     });
 
@@ -517,6 +460,18 @@ async function salvarNovaSenha(){
       btnSalvarSenha.disabled = false;
       btnSalvarSenha.textContent = "Salvar nova senha";
       return;
+    }
+
+    const { data: userData } = await supabaseClient.auth.getUser();
+
+    if(userData && userData.user){
+      const assinaturaOk = await validarAssinatura(userData.user);
+
+      if(!assinaturaOk){
+        btnSalvarSenha.disabled = false;
+        btnSalvarSenha.textContent = "Salvar nova senha";
+        return;
+      }
     }
 
     mostrar("Senha criada com sucesso. Redirecionando para a plataforma...", "sucesso");
