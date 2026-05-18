@@ -926,10 +926,6 @@ input:focus,select:focus,textarea:focus{
 
 
 /* ===== Gerenciamento de assinatura — Stripe Customer Portal ===== */
-.drawer-settings-wrap{
-  position:relative;
-  display:inline-flex;
-}
 .manage-sub-btn svg{
   width:30px;
   height:30px;
@@ -939,48 +935,14 @@ input:focus,select:focus,textarea:focus{
   stroke-linecap:round;
   stroke-linejoin:round;
 }
-.subscription-menu{
-  position:absolute;
-  top:52px;
-  left:0;
-  width:255px;
-  max-width:78vw;
-  display:none;
-  flex-direction:column;
-  gap:8px;
-  padding:10px;
-  border-radius:18px;
-  background:linear-gradient(180deg,#123F4E,#061D26);
-  border:1px solid rgba(199,164,106,.38);
-  box-shadow:0 22px 50px rgba(0,0,0,.32);
-  z-index:80;
+.manage-sub-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
 }
-.subscription-menu.active{display:flex}
-.subscription-menu button,
-.subscription-menu a{
-  width:100%;
-  border:1px solid rgba(255,255,255,.10);
-  border-radius:13px;
-  background:rgba(255,255,255,.08);
-  color:#fff;
-  text-align:left;
-  padding:12px 13px;
-  font-size:13px;
-  font-weight:800;
-  cursor:pointer;
-  text-decoration:none;
-  line-height:1.35;
-}
-.subscription-menu button:hover,
-.subscription-menu a:hover{
-  background:rgba(138,174,146,.18);
-}
-.subscription-menu small{
-  display:block;
-  color:rgba(255,255,255,.62);
-  font-size:11px;
-  font-weight:500;
-  margin-top:3px;
+.manage-sub-btn:disabled{
+  opacity:.58;
+  cursor:not-allowed;
 }
 
 </style>
@@ -1115,18 +1077,12 @@ window.sairEmergys = async function(){
 <rect height="14" rx="2" width="18" x="3" y="5"></rect>
 <path d="M4 7l8 6 8-6"></path>
 </svg></button>
-<div class="drawer-settings-wrap">
-<button aria-label="Gerenciar assinatura" class="nav-item home-menu-home manage-sub-btn" onclick="toggleSubscriptionMenu(event)" title="Gerenciar assinatura">
+<button aria-label="Gerenciar assinatura" class="nav-item home-menu-home manage-sub-btn" onclick="abrirPortalAssinatura()" title="Gerenciar assinatura">
 <svg viewBox="0 0 24 24" aria-hidden="true">
 <circle cx="12" cy="12" r="3"></circle>
 <path d="M19.4 15a1.8 1.8 0 0 0 .36 1.98l.04.04a2.1 2.1 0 0 1-2.97 2.97l-.04-.04a1.8 1.8 0 0 0-1.98-.36 1.8 1.8 0 0 0-1.1 1.66V21a2.1 2.1 0 0 1-4.2 0v-.06a1.8 1.8 0 0 0-1.1-1.66 1.8 1.8 0 0 0-1.98.36l-.04.04a2.1 2.1 0 0 1-2.97-2.97l.04-.04A1.8 1.8 0 0 0 4.6 15a1.8 1.8 0 0 0-1.66-1.1H3a2.1 2.1 0 0 1 0-4.2h.06A1.8 1.8 0 0 0 4.72 8.6a1.8 1.8 0 0 0-.36-1.98l-.04-.04a2.1 2.1 0 0 1 2.97-2.97l.04.04A1.8 1.8 0 0 0 9.3 4a1.8 1.8 0 0 0 1.1-1.66V2.3a2.1 2.1 0 0 1 4.2 0v.06A1.8 1.8 0 0 0 15.7 4a1.8 1.8 0 0 0 1.98-.36l.04-.04a2.1 2.1 0 0 1 2.97 2.97l-.04.04A1.8 1.8 0 0 0 19.4 9c.48.19.88.58 1.1 1.06H21a2.1 2.1 0 0 1 0 4.2h-.06A1.8 1.8 0 0 0 19.4 15z"></path>
 </svg>
 </button>
-<div class="subscription-menu" id="subscriptionMenu">
-<button type="button" onclick="abrirPortalAssinatura()">Gerenciar assinatura<small>Cancelar, trocar cartão e visualizar faturas.</small></button>
-<a href="mailto:drfelipediasfigueiredo@gmail.com?subject=Suporte%20Emergys%20-%20Assinatura">Suporte de assinatura<small>Contato direto com suporte.</small></a>
-</div>
-</div>
 </div>
 </div>
 <div class="nav-section">
@@ -7336,34 +7292,21 @@ function puerShowTab(id, btn){
 
 
 <script>
-function toggleSubscriptionMenu(event){
-  if(event){ event.stopPropagation(); }
-  const menu = document.getElementById("subscriptionMenu");
-  if(menu){ menu.classList.toggle("active"); }
-}
-
-document.addEventListener("click", function(event){
-  const menu = document.getElementById("subscriptionMenu");
-  if(!menu){ return; }
-  if(!event.target.closest(".drawer-settings-wrap")){
-    menu.classList.remove("active");
-  }
-});
-
 async function abrirPortalAssinatura(){
-  const menu = document.getElementById("subscriptionMenu");
-  if(menu){ menu.classList.remove("active"); }
+  const botao = document.querySelector(".manage-sub-btn");
 
   try{
-    const { data: { session }, error } = await emergysSupabase.auth.getSession();
+    if(botao){ botao.disabled = true; }
 
-    if(error || !session){
+    const { data: { session } } = await emergysSupabase.auth.getSession();
+
+    if(!session){
       alert("Sessão expirada. Faça login novamente.");
       window.location.replace("../login.html");
       return;
     }
 
-    const resposta = await fetch("/api/create-customer-portal", {
+    const resposta = await fetch("/api/portal-assinatura", {
       method:"POST",
       headers:{
         "Content-Type":"application/json",
@@ -7371,19 +7314,31 @@ async function abrirPortalAssinatura(){
       }
     });
 
-    const dados = await resposta.json().catch(() => ({}));
+    let dados = {};
 
-    if(!resposta.ok || !dados.url){
+    try{
+      dados = await resposta.json();
+    }catch(e){}
+
+    if(!resposta.ok){
       alert(dados.error || "Não foi possível abrir o gerenciamento da assinatura.");
       return;
     }
 
-    window.location.href = dados.url;
+    if(dados.url){
+      window.location.href = dados.url;
+      return;
+    }
+
+    alert("Link de gerenciamento não encontrado.");
 
   }catch(e){
-    alert("Erro ao abrir o gerenciamento da assinatura. Tente novamente.");
+    alert("Erro ao abrir gerenciamento da assinatura.");
+  }finally{
+    if(botao){ botao.disabled = false; }
   }
 }
+
 </script>
 
 </body></html>
