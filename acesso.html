@@ -1,0 +1,295 @@
+Crie um arquivo novo no GitHub:
+
+acesso.html
+
+Cole este conteúdo:
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emergys | Primeiro acesso</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --azul:#061D26;
+  --azul2:#0F3443;
+  --dourado:#C7A46A;
+  --salvia:#8AAE92;
+  --muted:rgba(255,255,255,.70);
+}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+body{
+  min-height:100vh;
+  font-family:Inter,sans-serif;
+  background:
+    radial-gradient(circle at 75% 20%,rgba(138,174,146,.24),transparent 32%),
+    radial-gradient(circle at 15% 85%,rgba(199,164,106,.17),transparent 36%),
+    linear-gradient(145deg,var(--azul),var(--azul2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  color:#fff;
+}
+.card{
+  width:100%;
+  max-width:440px;
+  border-radius:34px;
+  padding:34px;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.13);
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 90px rgba(0,0,0,.35);
+}
+.logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:30px;
+}
+.logo-mark{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  background:linear-gradient(145deg,var(--azul2),var(--azul));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(199,164,106,.35);
+}
+.logo-mark svg{
+  width:42px;
+  height:42px;
+  overflow:visible;
+}
+.logo-text{
+  font-family:Manrope,sans-serif;
+  font-size:23px;
+  letter-spacing:6px;
+  font-weight:800;
+}
+.logo-text span{
+  color:var(--dourado);
+}
+.logo-sub{
+  display:block;
+  margin-top:4px;
+  font-size:9px;
+  letter-spacing:.28em;
+  color:var(--salvia);
+  font-weight:700;
+  text-transform:uppercase;
+}
+h1{
+  font-family:Manrope,sans-serif;
+  font-size:34px;
+  line-height:1.05;
+  letter-spacing:-1.2px;
+  margin-bottom:12px;
+}
+p{
+  color:var(--muted);
+  line-height:1.7;
+  font-size:15px;
+  margin-bottom:26px;
+}
+label{
+  display:block;
+  margin-bottom:8px;
+  color:var(--dourado);
+  font-size:13px;
+  font-weight:800;
+}
+input{
+  width:100%;
+  padding:16px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:15px;
+  outline:none;
+  margin-bottom:18px;
+}
+input::placeholder{
+  color:rgba(255,255,255,.38);
+}
+input:focus{
+  border-color:var(--dourado);
+  box-shadow:0 0 0 3px rgba(199,164,106,.16);
+}
+button{
+  width:100%;
+  border:0;
+  padding:17px;
+  border-radius:18px;
+  background:linear-gradient(135deg,var(--dourado),#E3C986);
+  color:#14262C;
+  font-weight:900;
+  cursor:pointer;
+  font-size:15px;
+  transition:.2s ease;
+  margin-top:10px;
+}
+button:hover{
+  transform:translateY(-1px);
+}
+button:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+  transform:none;
+}
+.secondary{
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  border:1px solid rgba(255,255,255,.14);
+}
+.msg{
+  display:none;
+  margin-top:18px;
+  padding:14px;
+  border-radius:15px;
+  font-size:13px;
+  line-height:1.45;
+  white-space:pre-wrap;
+}
+.msg.info{
+  display:block;
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.12);
+}
+.msg.erro{
+  display:block;
+  background:rgba(182,74,74,.14);
+  color:#FFD8D8;
+  border:1px solid rgba(182,74,74,.35);
+}
+.msg.sucesso{
+  display:block;
+  background:rgba(138,174,146,.14);
+  color:#DDF5E4;
+  border:1px solid rgba(138,174,146,.38);
+}
+.footer{
+  margin-top:22px;
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+}
+.footer a{
+  color:var(--dourado);
+  text-decoration:none;
+  font-weight:700;
+}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 140 140" fill="none">
+        <path d="M25 98C51 88 74 67 100 30" stroke="#C7A46A" stroke-width="9" stroke-linecap="round"/>
+        <path d="M30 111C58 101 84 78 113 44" stroke="#8AAE92" stroke-width="7" stroke-linecap="round"/>
+        <path d="M42 124C70 112 96 94 124 64" stroke="#C7A46A" stroke-width="5" stroke-linecap="round"/>
+        <path d="M100 30L124 34L113 11" stroke="#C7A46A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">EMERG<span>YS</span></div>
+      <span class="logo-sub">Health Tech</span>
+    </div>
+  </div>
+  <h1>Primeiro acesso</h1>
+  <p>
+    Digite seu e-mail de assinatura para receber o link de criação ou recuperação de senha.
+  </p>
+  <label>E-mail</label>
+  <input type="email" id="email" placeholder="seuemail@email.com" autocomplete="email">
+  <button id="btnPrimeiroAcesso" type="button">
+    Primeiro acesso / Criar senha
+  </button>
+  <button id="btnRecuperar" class="secondary" type="button">
+    Esqueci minha senha
+  </button>
+  <div id="msg" class="msg info">
+    Informe o e-mail usado na assinatura.
+  </div>
+  <div class="footer">
+    <a href="login.html">Voltar ao login</a> ·
+    <a href="index.html">Site Emergys</a>
+  </div>
+</div>
+<script>
+const msg = document.getElementById("msg");
+const btnPrimeiroAcesso = document.getElementById("btnPrimeiroAcesso");
+const btnRecuperar = document.getElementById("btnRecuperar");
+function mostrar(texto, tipo="info"){
+  msg.className = "msg " + tipo;
+  msg.textContent = texto;
+}
+btnPrimeiroAcesso.addEventListener("click", function(){
+  enviarAcesso("invite");
+});
+btnRecuperar.addEventListener("click", function(){
+  enviarAcesso("recovery");
+});
+async function enviarAcesso(tipo){
+  const email = document.getElementById("email").value.trim();
+  if(!email){
+    mostrar("Digite seu e-mail para continuar.", "erro");
+    return;
+  }
+  btnPrimeiroAcesso.disabled = true;
+  btnRecuperar.disabled = true;
+  mostrar("Enviando e-mail...", "info");
+  try{
+    const resposta = await fetch("/api/enviar-convite", {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        email,
+        tipo
+      })
+    });
+    let resultado = {};
+    try{
+      resultado = await resposta.json();
+    }catch(e){}
+    if(!resposta.ok){
+      mostrar(
+        "Não foi possível enviar o e-mail: " + (resultado.error || "erro desconhecido"),
+        "erro"
+      );
+      btnPrimeiroAcesso.disabled = false;
+      btnRecuperar.disabled = false;
+      return;
+    }
+    if(tipo === "invite"){
+      mostrar(
+        "E-mail de primeiro acesso enviado com sucesso.\n\nAbra o link recebido para criar sua senha.",
+        "sucesso"
+      );
+    }else{
+      mostrar(
+        "E-mail de recuperação enviado com sucesso.\n\nAbra o link recebido para redefinir sua senha.",
+        "sucesso"
+      );
+    }
+  }catch(e){
+    mostrar("Erro inesperado ao enviar e-mail.", "erro");
+  }
+  btnPrimeiroAcesso.disabled = false;
+  btnRecuperar.disabled = false;
+}
+</script>
+</body>
+</html>
