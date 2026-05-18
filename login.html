@@ -7,7 +7,6 @@
 <title>Emergys | Login</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
@@ -16,17 +15,10 @@
   --azul2:#0F3443;
   --dourado:#C7A46A;
   --salvia:#8AAE92;
-  --branco:#FFFFFF;
   --muted:rgba(255,255,255,.70);
-  --erro:#B64A4A;
-  --sucesso:#8AAE92;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
+*{margin:0;padding:0;box-sizing:border-box}
 
 body{
   min-height:100vh;
@@ -84,14 +76,11 @@ body{
   font-weight:800;
 }
 
-.logo-text span{
-  color:var(--dourado);
-}
+.logo-text span{color:var(--dourado)}
 
 .logo-sub{
   display:block;
   margin-top:4px;
-  font-family:Inter,sans-serif;
   font-size:9px;
   letter-spacing:.28em;
   color:var(--salvia);
@@ -134,9 +123,7 @@ input{
   margin-bottom:18px;
 }
 
-input::placeholder{
-  color:rgba(255,255,255,.38);
-}
+input::placeholder{color:rgba(255,255,255,.38)}
 
 input:focus{
   border-color:var(--dourado);
@@ -156,9 +143,7 @@ button{
   transition:.2s ease;
 }
 
-button:hover{
-  transform:translateY(-1px);
-}
+button:hover{transform:translateY(-1px)}
 
 button:disabled{
   opacity:.55;
@@ -166,11 +151,28 @@ button:disabled{
   transform:none;
 }
 
-.secondary-btn{
-  margin-top:12px;
+.access-links{
+  margin-top:18px;
+  display:grid;
+  gap:10px;
+}
+
+.access-links a{
+  display:block;
+  width:100%;
+  padding:15px;
+  border-radius:16px;
   background:rgba(255,255,255,.08);
-  color:#fff;
   border:1px solid rgba(255,255,255,.14);
+  color:#fff;
+  text-align:center;
+  text-decoration:none;
+  font-size:14px;
+  font-weight:800;
+}
+
+.access-links a:hover{
+  background:rgba(138,174,146,.18);
 }
 
 .msg{
@@ -202,18 +204,6 @@ button:disabled{
   background:rgba(138,174,146,.14);
   color:#DDF5E4;
   border:1px solid rgba(138,174,146,.38);
-}
-
-.links{
-  margin-top:18px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-
-.links button{
-  padding:15px;
-  font-size:14px;
 }
 
 .footer{
@@ -258,45 +248,18 @@ button:disabled{
   </p>
 
   <label>E-mail</label>
-
-  <input
-    type="email"
-    id="email"
-    placeholder="seuemail@email.com"
-    autocomplete="email"
-  >
+  <input type="email" id="email" placeholder="seuemail@email.com" autocomplete="email">
 
   <label>Senha</label>
-
-  <input
-    type="password"
-    id="senha"
-    placeholder="Digite sua senha"
-    autocomplete="current-password"
-  >
+  <input type="password" id="senha" placeholder="Digite sua senha" autocomplete="current-password">
 
   <button id="btnLogin" type="button">
     Acessar plataforma
   </button>
 
-  <div class="links">
-
-    <button
-      class="secondary-btn"
-      id="btnPrimeiroAcesso"
-      type="button"
-    >
-      Primeiro acesso / Criar senha
-    </button>
-
-    <button
-      class="secondary-btn"
-      id="btnRecuperar"
-      type="button"
-    >
-      Esqueci minha senha
-    </button>
-
+  <div class="access-links">
+    <a href="acesso.html">Primeiro acesso / Criar senha</a>
+    <a href="acesso.html">Esqueci minha senha</a>
   </div>
 
   <div id="msg" class="msg info">
@@ -304,312 +267,115 @@ button:disabled{
   </div>
 
   <div class="footer">
-    Emergys © 2026 ·
-    <a href="index.html">Voltar ao site</a>
+    Emergys © 2026 · <a href="index.html">Voltar ao site</a>
   </div>
 
 </div>
 
 <script>
+const SUPABASE_URL = "https://uuiuepdpjhpyxhgmveur.supabase.co";
+const SUPABASE_KEY = "sb_publishable_AVT257sp6FQB8ZWvjyEfwQ_L2jfJ3tS";
 
-const SUPABASE_URL =
-  "https://uuiuepdpjhpyxhgmveur.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_AVT257sp6FQB8ZWvjyEfwQ_L2jfJ3tS";
-
-const msg =
-  document.getElementById("msg");
-
-const btn =
-  document.getElementById("btnLogin");
-
-const btnPrimeiroAcesso =
-  document.getElementById("btnPrimeiroAcesso");
-
-const btnRecuperar =
-  document.getElementById("btnRecuperar");
+const msg = document.getElementById("msg");
+const btnLogin = document.getElementById("btnLogin");
 
 function mostrar(texto, tipo="info"){
-
   msg.className = "msg " + tipo;
-
   msg.textContent = texto;
 }
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
-btn.addEventListener("click", login);
-
-btnPrimeiroAcesso.addEventListener(
-  "click",
-  () => solicitarCriacaoSenha("invite")
+const supabaseClient = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
 );
 
-btnRecuperar.addEventListener(
-  "click",
-  () => solicitarCriacaoSenha("recovery")
-);
+btnLogin.addEventListener("click", login);
 
-document
-  .getElementById("senha")
-  .addEventListener(
-    "keydown",
-    function(e){
-
-      if(e.key === "Enter"){
-        login();
-      }
-    }
-  );
+document.getElementById("senha").addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    login();
+  }
+});
 
 async function login(){
 
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
-
-  const senha =
-    document
-      .getElementById("senha")
-      .value
-      .trim();
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("senha").value.trim();
 
   if(!email || !senha){
-
-    mostrar(
-      "Preencha e-mail e senha.",
-      "erro"
-    );
-
+    mostrar("Preencha e-mail e senha.", "erro");
     return;
   }
 
-  btn.disabled = true;
-
-  btn.textContent =
-    "Verificando...";
-
-  mostrar(
-    "Verificando credenciais...",
-    "info"
-  );
+  btnLogin.disabled = true;
+  btnLogin.textContent = "Verificando...";
+  mostrar("Verificando credenciais...", "info");
 
   try{
 
-    const { data, error } =
-      await supabaseClient.auth
-      .signInWithPassword({
-        email,
-        password: senha
-      });
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password: senha
+    });
 
-    if(error){
-
-      mostrar(
-        "E-mail ou senha inválidos.",
-        "erro"
-      );
-
-      btn.disabled = false;
-
-      btn.textContent =
-        "Acessar plataforma";
-
+    if(error || !data.user){
+      mostrar("E-mail ou senha inválidos.", "erro");
+      btnLogin.disabled = false;
+      btnLogin.textContent = "Acessar plataforma";
       return;
     }
 
-    const { data: profile } =
-      await supabaseClient
+    mostrar("Login aceito. Verificando assinatura...", "info");
+
+    const { data: profile, error: profileError } = await supabaseClient
       .from("profiles")
-      .select("*")
+      .select("ativo, validade, plano")
       .eq("email", email)
-      .single();
+      .maybeSingle();
 
-    if(!profile){
-
-      mostrar(
-        "Usuário sem assinatura vinculada.",
-        "erro"
-      );
-
+    if(profileError || !profile){
       await supabaseClient.auth.signOut();
-
-      btn.disabled = false;
-
-      btn.textContent =
-        "Acessar plataforma";
-
+      mostrar("Usuário sem assinatura vinculada.", "erro");
+      btnLogin.disabled = false;
+      btnLogin.textContent = "Acessar plataforma";
       return;
     }
 
     if(profile.ativo !== true){
-
-      mostrar(
-        "Sua assinatura está inativa.",
-        "erro"
-      );
-
       await supabaseClient.auth.signOut();
-
-      btn.disabled = false;
-
-      btn.textContent =
-        "Acessar plataforma";
-
+      mostrar("Sua assinatura está inativa. Regularize o acesso para continuar.", "erro");
+      btnLogin.disabled = false;
+      btnLogin.textContent = "Acessar plataforma";
       return;
     }
 
     if(profile.validade){
-
       const hoje = new Date();
-
       hoje.setHours(0,0,0,0);
 
-      const validade =
-        new Date(
-          profile.validade +
-          "T00:00:00"
-        );
+      const validade = new Date(profile.validade + "T23:59:59");
 
       if(validade < hoje){
-
-        mostrar(
-          "Seu acesso expirou.",
-          "erro"
-        );
-
         await supabaseClient.auth.signOut();
-
-        btn.disabled = false;
-
-        btn.textContent =
-          "Acessar plataforma";
-
+        mostrar("Seu acesso expirou. Renove sua assinatura para continuar.", "erro");
+        btnLogin.disabled = false;
+        btnLogin.textContent = "Acessar plataforma";
         return;
       }
     }
 
-    mostrar(
-      "Acesso liberado.",
-      "sucesso"
-    );
+    mostrar("Acesso liberado. Redirecionando...", "sucesso");
 
-    window.location.href =
-      "app/";
+    setTimeout(function(){
+      window.location.href = "app/";
+    }, 700);
 
   }catch(e){
-
-    mostrar(
-      "Erro inesperado.",
-      "erro"
-    );
-
-    btn.disabled = false;
-
-    btn.textContent =
-      "Acessar plataforma";
+    mostrar("Erro inesperado ao realizar login.", "erro");
+    btnLogin.disabled = false;
+    btnLogin.textContent = "Acessar plataforma";
   }
 }
-
-async function solicitarCriacaoSenha(
-  tipo = "invite"
-){
-
-  const email =
-    document
-      .getElementById("email")
-      .value
-      .trim();
-
-  if(!email){
-
-    mostrar(
-      "Digite seu e-mail.",
-      "erro"
-    );
-
-    return;
-  }
-
-  btnPrimeiroAcesso.disabled = true;
-  btnRecuperar.disabled = true;
-
-  mostrar(
-    "Enviando e-mail...",
-    "info"
-  );
-
-  try{
-
-    const resposta =
-      await fetch(
-        "/api/enviar-convite",
-        {
-          method:"POST",
-
-          headers:{
-            "Content-Type":
-              "application/json"
-          },
-
-          body: JSON.stringify({
-            email,
-            tipo
-          })
-        }
-      );
-
-    const resultado =
-      await resposta.json();
-
-    if(!resposta.ok){
-
-      mostrar(
-        resultado.error ||
-        "Erro ao enviar e-mail.",
-        "erro"
-      );
-
-      btnPrimeiroAcesso.disabled = false;
-      btnRecuperar.disabled = false;
-
-      return;
-    }
-
-    if(tipo === "invite"){
-
-      mostrar(
-        "E-mail de criação de senha enviado com sucesso.\n\nVerifique sua caixa de entrada.",
-        "sucesso"
-      );
-
-    }else{
-
-      mostrar(
-        "E-mail de recuperação enviado com sucesso.\n\nVerifique sua caixa de entrada.",
-        "sucesso"
-      );
-    }
-
-  }catch(e){
-
-    mostrar(
-      "Erro inesperado ao enviar e-mail.",
-      "erro"
-    );
-  }
-
-  btnPrimeiroAcesso.disabled = false;
-  btnRecuperar.disabled = false;
-}
-
 </script>
 
 </body>
