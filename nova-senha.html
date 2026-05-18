@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Emergys | Nova senha</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+  --azul:#061D26;
+  --azul2:#0F3443;
+  --dourado:#C7A46A;
+  --salvia:#8AAE92;
+  --muted:rgba(255,255,255,.70);
+}
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  min-height:100vh;
+  font-family:Inter,sans-serif;
+  background:
+    radial-gradient(circle at 75% 20%,rgba(138,174,146,.24),transparent 32%),
+    radial-gradient(circle at 15% 85%,rgba(199,164,106,.17),transparent 36%),
+    linear-gradient(145deg,var(--azul),var(--azul2));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:24px;
+  color:#fff;
+}
+
+.card{
+  width:100%;
+  max-width:440px;
+  border-radius:34px;
+  padding:34px;
+  background:rgba(255,255,255,.075);
+  border:1px solid rgba(255,255,255,.13);
+  backdrop-filter:blur(18px);
+  box-shadow:0 30px 90px rgba(0,0,0,.35);
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:30px;
+}
+
+.logo-mark{
+  width:58px;
+  height:58px;
+  border-radius:18px;
+  background:linear-gradient(145deg,var(--azul2),var(--azul));
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(199,164,106,.35);
+}
+
+.logo-mark svg{
+  width:42px;
+  height:42px;
+}
+
+.logo-text{
+  font-family:Manrope,sans-serif;
+  font-size:23px;
+  letter-spacing:6px;
+  font-weight:800;
+}
+
+.logo-text span{
+  color:var(--dourado);
+}
+
+.logo-sub{
+  display:block;
+  margin-top:4px;
+  font-size:9px;
+  letter-spacing:.28em;
+  color:var(--salvia);
+  font-weight:700;
+  text-transform:uppercase;
+}
+
+h1{
+  font-family:Manrope,sans-serif;
+  font-size:34px;
+  margin-bottom:12px;
+}
+
+p{
+  color:var(--muted);
+  line-height:1.7;
+  font-size:15px;
+  margin-bottom:26px;
+}
+
+label{
+  display:block;
+  margin-bottom:8px;
+  color:var(--dourado);
+  font-size:13px;
+  font-weight:800;
+}
+
+input{
+  width:100%;
+  padding:16px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.08);
+  color:#fff;
+  font-size:15px;
+  outline:none;
+  margin-bottom:18px;
+}
+
+input::placeholder{
+  color:rgba(255,255,255,.38);
+}
+
+button{
+  width:100%;
+  border:0;
+  padding:17px;
+  border-radius:18px;
+  background:linear-gradient(135deg,var(--dourado),#E3C986);
+  color:#14262C;
+  font-weight:900;
+  cursor:pointer;
+  font-size:15px;
+}
+
+button:disabled{
+  opacity:.55;
+}
+
+.msg{
+  display:none;
+  margin-top:18px;
+  padding:14px;
+  border-radius:15px;
+  font-size:13px;
+  line-height:1.45;
+  white-space:pre-wrap;
+}
+
+.msg.info{
+  display:block;
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.82);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.msg.erro{
+  display:block;
+  background:rgba(182,74,74,.14);
+  color:#FFD8D8;
+  border:1px solid rgba(182,74,74,.35);
+}
+
+.msg.sucesso{
+  display:block;
+  background:rgba(138,174,146,.14);
+  color:#DDF5E4;
+  border:1px solid rgba(138,174,146,.38);
+}
+
+.footer{
+  margin-top:22px;
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="logo">
+
+    <div class="logo-mark">
+      <svg viewBox="0 0 140 140" fill="none">
+        <path d="M25 98C51 88 74 67 100 30" stroke="#C7A46A" stroke-width="9" stroke-linecap="round"/>
+        <path d="M30 111C58 101 84 78 113 44" stroke="#8AAE92" stroke-width="7" stroke-linecap="round"/>
+        <path d="M42 124C70 112 96 94 124 64" stroke="#C7A46A" stroke-width="5" stroke-linecap="round"/>
+        <path d="M100 30L124 34L113 11" stroke="#C7A46A" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <div>
+      <div class="logo-text">EMERG<span>YS</span></div>
+      <span class="logo-sub">Health Tech</span>
+    </div>
+
+  </div>
+
+  <h1>Nova senha</h1>
+
+  <p>
+    Defina sua nova senha para acessar a plataforma Emergys.
+  </p>
+
+  <label>Nova senha</label>
+
+  <input
+    type="password"
+    id="novaSenha"
+    placeholder="Digite sua nova senha"
+  >
+
+  <label>Confirmar senha</label>
+
+  <input
+    type="password"
+    id="confirmarSenha"
+    placeholder="Confirme sua nova senha"
+  >
+
+  <button id="btnSalvar">
+    Salvar nova senha
+  </button>
+
+  <div id="msg" class="msg info">
+    Defina sua nova senha.
+  </div>
+
+  <div class="footer">
+    Emergys © 2026
+  </div>
+
+</div>
+
+<script>
+
+const SUPABASE_URL =
+  "https://uuiuepdpjhpyxhgmveur.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_AVT257sp6FQB8ZWvjyEfwQ_L2jfJ3tS";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+const btnSalvar =
+  document.getElementById("btnSalvar");
+
+const msg =
+  document.getElementById("msg");
+
+function mostrar(texto, tipo="info"){
+
+  msg.className = "msg " + tipo;
+
+  msg.textContent = texto;
+}
+
+btnSalvar.addEventListener(
+  "click",
+  salvarSenha
+);
+
+async function salvarSenha(){
+
+  const senha =
+    document
+      .getElementById("novaSenha")
+      .value
+      .trim();
+
+  const confirmar =
+    document
+      .getElementById("confirmarSenha")
+      .value
+      .trim();
+
+  if(!senha || !confirmar){
+
+    mostrar(
+      "Preencha os dois campos.",
+      "erro"
+    );
+
+    return;
+  }
+
+  if(senha.length < 6){
+
+    mostrar(
+      "A senha deve possuir pelo menos 6 caracteres.",
+      "erro"
+    );
+
+    return;
+  }
+
+  if(senha !== confirmar){
+
+    mostrar(
+      "As senhas não coincidem.",
+      "erro"
+    );
+
+    return;
+  }
+
+  btnSalvar.disabled = true;
+
+  btnSalvar.textContent =
+    "Salvando...";
+
+  mostrar(
+    "Atualizando senha...",
+    "info"
+  );
+
+  try{
+
+    const { error } =
+      await supabaseClient.auth.updateUser({
+        password: senha
+      });
+
+    if(error){
+
+      mostrar(
+        "Não foi possível atualizar a senha.\n\nSolicite um novo link.",
+        "erro"
+      );
+
+      btnSalvar.disabled = false;
+
+      btnSalvar.textContent =
+        "Salvar nova senha";
+
+      return;
+    }
+
+    mostrar(
+      "Senha atualizada com sucesso.\n\nRedirecionando para login...",
+      "sucesso"
+    );
+
+    setTimeout(function(){
+
+      window.location.href =
+        "/login.html";
+
+    }, 2200);
+
+  }catch(e){
+
+    mostrar(
+      "Erro inesperado ao atualizar senha.",
+      "erro"
+    );
+
+    btnSalvar.disabled = false;
+
+    btnSalvar.textContent =
+      "Salvar nova senha";
+  }
+}
+
+</script>
+
+</body>
+</html>
