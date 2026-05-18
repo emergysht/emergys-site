@@ -19,7 +19,11 @@
   --erro:#B64A4A;
 }
 
-*{margin:0;padding:0;box-sizing:border-box}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
 body{
   min-height:100vh;
@@ -77,7 +81,9 @@ body{
   font-weight:800;
 }
 
-.logo-text span{color:var(--dourado)}
+.logo-text span{
+  color:var(--dourado);
+}
 
 .logo-sub{
   display:block;
@@ -125,7 +131,9 @@ input{
   margin-bottom:18px;
 }
 
-input::placeholder{color:rgba(255,255,255,.38)}
+input::placeholder{
+  color:rgba(255,255,255,.38);
+}
 
 input:focus{
   border-color:var(--dourado);
@@ -145,7 +153,9 @@ button{
   transition:.2s ease;
 }
 
-button:hover{transform:translateY(-1px)}
+button:hover{
+  transform:translateY(-1px);
+}
 
 button:disabled{
   opacity:.55;
@@ -203,7 +213,9 @@ button:disabled{
   font-size:14px;
 }
 
-.hidden{display:none}
+.hidden{
+  display:none;
+}
 
 .footer{
   margin-top:22px;
@@ -314,6 +326,10 @@ function mostrar(texto, tipo="info"){
   msg.textContent = texto;
 }
 
+if(!window.supabase){
+  mostrar("Erro: não foi possível carregar a autenticação.", "erro");
+}
+
 const supabaseClient = window.supabase.createClient(
   SUPABASE_URL,
   SUPABASE_KEY
@@ -325,7 +341,9 @@ btnRecuperar.addEventListener("click", solicitarCriacaoSenha);
 btnSalvarSenha.addEventListener("click", salvarNovaSenha);
 
 document.getElementById("senha").addEventListener("keydown", function(e){
-  if(e.key === "Enter") login();
+  if(e.key === "Enter"){
+    login();
+  }
 });
 
 function abrirTelaSenha(){
@@ -345,31 +363,38 @@ async function detectarLinkSupabase(){
     search.includes("type=recovery") ||
     search.includes("type=invite");
 
-  if(!temToken) return;
+  if(!temToken){
+    return;
+  }
 
   mostrar("Validando link de acesso...", "info");
 
-  const { data, error } = await supabaseClient.auth.getSession();
+  try{
+    const { data, error } = await supabaseClient.auth.getSession();
 
-  if(error){
-    mostrar("Não foi possível validar o link. Solicite um novo acesso.", "erro");
-    return;
-  }
-
-  if(data && data.session){
-    abrirTelaSenha();
-    return;
-  }
-
-  setTimeout(async function(){
-    const { data: data2 } = await supabaseClient.auth.getSession();
-
-    if(data2 && data2.session){
-      abrirTelaSenha();
-    }else{
-      mostrar("Link aberto, mas a sessão não foi detectada. Solicite um novo link de criação de senha.", "erro");
+    if(error){
+      mostrar("Não foi possível validar o link. Solicite um novo acesso.", "erro");
+      return;
     }
-  }, 1200);
+
+    if(data && data.session){
+      abrirTelaSenha();
+      return;
+    }
+
+    setTimeout(async function(){
+      const { data: data2 } = await supabaseClient.auth.getSession();
+
+      if(data2 && data2.session){
+        abrirTelaSenha();
+      }else{
+        mostrar("Link aberto, mas a sessão não foi detectada. Solicite um novo link de criação de senha.", "erro");
+      }
+    }, 1200);
+
+  }catch(e){
+    mostrar("Erro ao validar o link de acesso.", "erro");
+  }
 }
 
 async function login(){
@@ -385,20 +410,27 @@ async function login(){
   btnLogin.textContent = "Verificando...";
   mostrar("Verificando credenciais...", "info");
 
-  const { data, error } = await supabaseClient.auth.signInWithPassword({
-    email,
-    password: senha
-  });
+  try{
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password: senha
+    });
 
-  if(error || !data.user){
-    mostrar("E-mail ou senha inválidos.", "erro");
+    if(error || !data.user){
+      mostrar("E-mail ou senha inválidos.", "erro");
+      btnLogin.disabled = false;
+      btnLogin.textContent = "Acessar plataforma";
+      return;
+    }
+
+    mostrar("Acesso liberado. Redirecionando...", "sucesso");
+    window.location.href = "app/";
+
+  }catch(e){
+    mostrar("Erro inesperado ao realizar login.", "erro");
     btnLogin.disabled = false;
     btnLogin.textContent = "Acessar plataforma";
-    return;
   }
-
-  mostrar("Acesso liberado. Redirecionando...", "sucesso");
-  window.location.href = "app/";
 }
 
 async function solicitarCriacaoSenha(){
@@ -414,21 +446,40 @@ async function solicitarCriacaoSenha(){
 
   mostrar("Enviando e-mail de acesso...", "info");
 
-  const { error } = await supabaseClient.auth.resetPasswordForEmail(
-    email,
-    {
-      redirectTo: "https://www.emergys.com.br/login.html"
+  try{
+    const resposta = await fetch("/api/enviar-convite", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    });
+
+    let resultado = {};
+
+    try{
+      resultado = await resposta.json();
+    }catch(e){}
+
+    if(!resposta.ok){
+      mostrar(
+        "Não foi possível enviar o e-mail: " + (resultado.error || "erro desconhecido"),
+        "erro"
+      );
+
+      btnPrimeiroAcesso.disabled = false;
+      btnRecuperar.disabled = false;
+      return;
     }
-  );
 
-  if(error){
-    mostrar("Não foi possível enviar o e-mail. Verifique o endereço informado.", "erro");
-    btnPrimeiroAcesso.disabled = false;
-    btnRecuperar.disabled = false;
-    return;
+    mostrar(
+      "E-mail enviado com sucesso.\n\nAbra o link recebido para criar ou alterar sua senha.",
+      "sucesso"
+    );
+
+  }catch(e){
+    mostrar("Erro inesperado ao enviar o e-mail de acesso.", "erro");
   }
-
-  mostrar("E-mail enviado com sucesso.\n\nAbra o link recebido para criar ou alterar sua senha.", "sucesso");
 
   btnPrimeiroAcesso.disabled = false;
   btnRecuperar.disabled = false;
@@ -456,22 +507,29 @@ async function salvarNovaSenha(){
   btnSalvarSenha.disabled = true;
   btnSalvarSenha.textContent = "Salvando...";
 
-  const { error } = await supabaseClient.auth.updateUser({
-    password: novaSenha
-  });
+  try{
+    const { error } = await supabaseClient.auth.updateUser({
+      password: novaSenha
+    });
 
-  if(error){
-    mostrar("Não foi possível salvar a senha. Solicite um novo link.", "erro");
+    if(error){
+      mostrar("Não foi possível salvar a senha. Solicite um novo link.", "erro");
+      btnSalvarSenha.disabled = false;
+      btnSalvarSenha.textContent = "Salvar nova senha";
+      return;
+    }
+
+    mostrar("Senha criada com sucesso. Redirecionando para a plataforma...", "sucesso");
+
+    setTimeout(function(){
+      window.location.href = "app/";
+    }, 1200);
+
+  }catch(e){
+    mostrar("Erro inesperado ao salvar a senha.", "erro");
     btnSalvarSenha.disabled = false;
     btnSalvarSenha.textContent = "Salvar nova senha";
-    return;
   }
-
-  mostrar("Senha criada com sucesso. Redirecionando para a plataforma...", "sucesso");
-
-  setTimeout(function(){
-    window.location.href = "app/";
-  }, 1200);
 }
 
 detectarLinkSupabase();
