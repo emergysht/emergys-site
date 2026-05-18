@@ -2,7 +2,9 @@ import Stripe from "stripe";
 import { createClient } from "@supabase/supabase-js";
 
 export const config = {
-  api: { bodyParser: false },
+  api: {
+    bodyParser: false,
+  },
 };
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -14,9 +16,11 @@ const supabase = createClient(
 
 async function getRawBody(readable) {
   const chunks = [];
+
   for await (const chunk of readable) {
     chunks.push(typeof chunk === "string" ? Buffer.from(chunk) : chunk);
   }
+
   return Buffer.concat(chunks);
 }
 
@@ -28,10 +32,17 @@ function calcularValidade(plan, durationDays) {
     return expiresAt;
   }
 
-  if (plan === "semestral") expiresAt.setMonth(expiresAt.getMonth() + 6);
-  else if (plan === "anual") expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-  else expiresAt.setMonth(expiresAt.getMonth() + 1);
+  if (plan === "semestral") {
+    expiresAt.setDate(expiresAt.getDate() + 180);
+    return expiresAt;
+  }
 
+  if (plan === "anual") {
+    expiresAt.setDate(expiresAt.getDate() + 365);
+    return expiresAt;
+  }
+
+  expiresAt.setDate(expiresAt.getDate() + 30);
   return expiresAt;
 }
 
@@ -46,6 +57,242 @@ async function buscarUsuarioPorEmail(email) {
   return data.users.find(
     (user) => user.email?.toLowerCase() === email.toLowerCase()
   );
+}
+
+async function ativarAcesso({ email, plan, expiresAt, customerId, subscriptionId, sessionId }) {
+  const { error: subscriptionError } = await supabase
+    .from("subscriptions")
+    .upsert(
+      {
+        email,
+        plan,
+        status: "active",
+        expires_at: expiresAt.toISOString(),
+        stripe_customer_id: customerId || null,
+        stripe_subscription_id: subscriptionId || null,
+        stripe_session_id: sessionId || null,
+        updated_at: new Date().toISOString(),
+      },
+      { onConflict: "email" }
+    );
+
+  if (subscriptionError) {
+    throw subscriptionError;
+  }
+
+  let userId = null;
+
+  const { data: inviteData, error: inviteError } =
+    await supabase.auth.admin.inviteUserByEmail(email, {
+      redirectTo: "https://www.emergys.com.br/login.html",
+    });
+
+  if (inviteError) {
+    const msg = inviteError.message || "";
+
+    if (
+      msg.includes("already registered") ||
+      msg.includes("User already registered") ||
+      msg.includes("already been registered")
+    ) {
+      const existingUser = await buscarUsuarioPorEmail(email);
+      userId = existingUser?.id || null;
+    } else {
+      throw inviteError;
+    }
+  } else {
+    userId = inviteData?.user?.id || null;
+  }
+
+  if (!userId) {
+    const existingUser = await buscarUsuarioPorEmail(email);
+    userId = existingUser?.id || null;
+  }
+
+  if (!userId) {
+    throw new Error("Usuário criado/encontrado, mas ID não localizado no Supabase Auth.");
+  }
+
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .upsert(
+      {
+        id: userId,
+        email,
+        ativo: true,
+        plano: plan,
+        validade: expiresAt.toISOString().slice(0, 10),
+      },
+      { onConflict: "id" }
+    );
+
+  if (profileError) {
+    throw profileError;
+  }
+}
+
+async function bloquearPorSubscription(subscriptionId, motivo = "inactive") {
+  if (!subscriptionId) return;
+
+  const { data: subscriptionRow, error: findError } = await supabase
+    .from("subscriptions")
+    .select("email")
+    .eq("stripe_subscription_id", subscriptionId)
+    .maybeSingle();
+
+  if (findError) {
+    throw findError;
+  }
+
+  const email = subscriptionRow?.email;
+
+  const { error: subError } = await supabase
+    .from("subscriptions")
+    .update({
+      status: motivo,
+      updated_at: new Date().toISOString(),
+    })
+    .eq("stripe_subscription_id", subscriptionId);
+
+  if (subError) {
+    throw subError;
+  }
+
+  if (email) {
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .update({
+        ativo: false,
+      })
+      .eq("email", email);
+
+    if (profileError) {
+      throw profileError;
+    }
+  }
+}
+
+async function renovarPorInvoice(invoice) {
+  const subscriptionId = invoice.subscription;
+
+  if (!subscriptionId) return;
+
+  const { data: subscriptionRow, error: findError } = await supabase
+    .from("subscriptions")
+    .select("email, plan")
+    .eq("stripe_subscription_id", subscriptionId)
+    .maybeSingle();
+
+  if (findError) {
+    throw findError;
+  }
+
+  if (!subscriptionRow?.email) return;
+
+  const stripeSubscription = await stripe.subscriptions.retrieve(subscriptionId);
+
+  let expiresAt = null;
+
+  if (stripeSubscription?.current_period_end) {
+    expiresAt = new Date(stripeSubscription.current_period_end * 1000);
+  } else {
+    expiresAt = calcularValidade(subscriptionRow.plan || "mensal", null);
+  }
+
+  const { error: subError } = await supabase
+    .from("subscriptions")
+    .update({
+      status: "active",
+      expires_at: expiresAt.toISOString(),
+      updated_at: new Date().toISOString(),
+    })
+    .eq("stripe_subscription_id", subscriptionId);
+
+  if (subError) {
+    throw subError;
+  }
+
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .update({
+      ativo: true,
+      validade: expiresAt.toISOString().slice(0, 10),
+    })
+    .eq("email", subscriptionRow.email);
+
+  if (profileError) {
+    throw profileError;
+  }
+}
+
+async function atualizarStatusSubscription(subscription) {
+  const subscriptionId = subscription.id;
+
+  const statusStripe = subscription.status;
+
+  if (!subscriptionId) return;
+
+  if (
+    statusStripe === "canceled" ||
+    statusStripe === "unpaid" ||
+    statusStripe === "incomplete_expired"
+  ) {
+    await bloquearPorSubscription(subscriptionId, statusStripe);
+    return;
+  }
+
+  if (
+    statusStripe === "active" ||
+    statusStripe === "trialing"
+  ) {
+    const { data: subscriptionRow, error: findError } = await supabase
+      .from("subscriptions")
+      .select("email, plan")
+      .eq("stripe_subscription_id", subscriptionId)
+      .maybeSingle();
+
+    if (findError) {
+      throw findError;
+    }
+
+    if (!subscriptionRow?.email) return;
+
+    const expiresAt = subscription.current_period_end
+      ? new Date(subscription.current_period_end * 1000)
+      : calcularValidade(subscriptionRow.plan || "mensal", null);
+
+    const { error: subError } = await supabase
+      .from("subscriptions")
+      .update({
+        status: "active",
+        expires_at: expiresAt.toISOString(),
+        updated_at: new Date().toISOString(),
+      })
+      .eq("stripe_subscription_id", subscriptionId);
+
+    if (subError) {
+      throw subError;
+    }
+
+    const { error: profileError } = await supabase
+      .from("profiles")
+      .update({
+        ativo: true,
+        validade: expiresAt.toISOString().slice(0, 10),
+      })
+      .eq("email", subscriptionRow.email);
+
+    if (profileError) {
+      throw profileError;
+    }
+  }
+
+  if (
+    statusStripe === "past_due" ||
+    statusStripe === "incomplete"
+  ) {
+    await bloquearPorSubscription(subscriptionId, statusStripe);
+  }
 }
 
 export default async function handler(req, res) {
@@ -83,93 +330,54 @@ export default async function handler(req, res) {
         });
       }
 
-      const customerId = session.customer || null;
-      const subscriptionId = session.subscription || null;
-
       const plan = session.metadata?.plan || "mensal";
       const durationDays = session.metadata?.duration_days || null;
       const expiresAt = calcularValidade(plan, durationDays);
 
-      const { error: subscriptionError } = await supabase
-        .from("subscriptions")
-        .upsert(
-          {
-            email,
-            plan,
-            status: "active",
-            expires_at: expiresAt.toISOString(),
-            stripe_customer_id: customerId,
-            stripe_subscription_id: subscriptionId,
-            stripe_session_id: session.id,
-            updated_at: new Date().toISOString(),
-          },
-          { onConflict: "email" }
-        );
+      await ativarAcesso({
+        email,
+        plan,
+        expiresAt,
+        customerId: session.customer || null,
+        subscriptionId: session.subscription || null,
+        sessionId: session.id,
+      });
 
-      if (subscriptionError) {
-        console.error("Erro ao salvar subscription:", subscriptionError);
-        return res.status(500).json({
-          error: subscriptionError.message,
-        });
-      }
-
-      let userId = null;
-
-      const { data: inviteData, error: inviteError } =
-        await supabase.auth.admin.inviteUserByEmail(email, {
-          redirectTo: "https://www.emergys.com.br/login.html",
-        });
-
-      if (inviteError) {
-        const msg = inviteError.message || "";
-
-        if (
-          msg.includes("already registered") ||
-          msg.includes("User already registered") ||
-          msg.includes("already been registered")
-        ) {
-          const existingUser = await buscarUsuarioPorEmail(email);
-          userId = existingUser?.id || null;
-        } else {
-          console.error("Erro ao enviar convite Supabase:", inviteError);
-          return res.status(500).json({
-            error: inviteError.message,
-          });
-        }
-      } else {
-        userId = inviteData?.user?.id || null;
-      }
-
-      if (!userId) {
-        return res.status(500).json({
-          error: "Usuário criado/encontrado, mas ID não localizado no Supabase Auth.",
-        });
-      }
-
-      const { error: profileError } = await supabase
-        .from("profiles")
-        .upsert(
-          {
-            id: userId,
-            email,
-            ativo: true,
-            plano: plan,
-            validade: expiresAt.toISOString().slice(0, 10),
-          },
-          { onConflict: "id" }
-        );
-
-      if (profileError) {
-        console.error("Erro ao salvar profile:", profileError);
-        return res.status(500).json({
-          error: profileError.message,
-        });
-      }
-
-      console.log("Assinatura liberada:", email);
+      console.log("Acesso ativado via checkout:", email);
     }
 
-    return res.status(200).json({ received: true });
+    if (event.type === "invoice.paid") {
+      await renovarPorInvoice(event.data.object);
+      console.log("Assinatura renovada por invoice.paid");
+    }
+
+    if (event.type === "invoice.payment_failed") {
+      const invoice = event.data.object;
+      await bloquearPorSubscription(invoice.subscription, "payment_failed");
+      console.log("Acesso bloqueado por falha de pagamento");
+    }
+
+    if (event.type === "invoice.payment_action_required") {
+      const invoice = event.data.object;
+      await bloquearPorSubscription(invoice.subscription, "payment_action_required");
+      console.log("Acesso bloqueado por ação de pagamento pendente");
+    }
+
+    if (event.type === "customer.subscription.deleted") {
+      const subscription = event.data.object;
+      await bloquearPorSubscription(subscription.id, "canceled");
+      console.log("Acesso bloqueado por assinatura cancelada");
+    }
+
+    if (event.type === "customer.subscription.updated") {
+      const subscription = event.data.object;
+      await atualizarStatusSubscription(subscription);
+      console.log("Status de assinatura atualizado");
+    }
+
+    return res.status(200).json({
+      received: true,
+    });
 
   } catch (err) {
     console.error("Erro geral no webhook:", err);
